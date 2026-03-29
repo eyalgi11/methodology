@@ -1,0 +1,22 @@
+# Definition of Ready
+
+- Task has a lifecycle state.
+- Task links to a feature spec when the work is non-trivial.
+- Scope is clear.
+- Success metric or measurable outcome is clear.
+- Business owner and why-now context are clear for meaningful product work.
+- Customer evidence or a real problem signal is recorded for meaningful feature work.
+- For experiment-driven work, hypothesis, baseline, success threshold, time-to-signal, and stop rule are written.
+- Blast radius classification is known for meaningful user-facing or risky work.
+- Security / privacy trigger is known for auth, payments, PII, secrets, or external integrations.
+- Instrumentation or observability plan is known when success depends on runtime signals.
+- Owner and approver are assigned for meaningful work.
+- Rollback owner is assigned for meaningful risky changes.
+- Acceptance criteria are written.
+- Dependencies and blockers are known.
+- Verification path is known.
+- For the next substantial implementation chunk, a task-local sprint contract exists or is intentionally refreshed with scope, done conditions, evaluator test plan, pass thresholds, and failure conditions.
+- For non-trivial user-facing UI work, a Stitch-based design basis exists in the feature spec unless the change is a trivial tweak or the existing design system already constrains the solution tightly.
+- Rollout and rollback paths are known for meaningful user-facing or risky changes.
+- Local runtime assumptions are known for work that touches app startup, backend runtime, databases, queues, or device/browser behavior.
+- If the work touches mobile app or device behavior, the verification path explicitly names the intended full native Appium run.
