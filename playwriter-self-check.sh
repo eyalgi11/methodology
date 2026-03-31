@@ -115,8 +115,8 @@ default_target() {
     printf '%s' "$PWD/methodology-audit.html"
     return 0
   fi
-  if [[ -f "/home/eyal/system-docs/methodology/methodology-audit.html" ]]; then
-    printf '%s' "/home/eyal/system-docs/methodology/methodology-audit.html"
+  if [[ -f "$SCRIPT_DIR/methodology-audit.html" ]]; then
+    printf '%s' "$SCRIPT_DIR/methodology-audit.html"
     return 0
   fi
   printf '%s' "about:blank"

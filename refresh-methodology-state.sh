@@ -29,6 +29,7 @@ while (($# > 0)); do
 done
 
 target_dir="$(resolve_target_dir "${target_arg:-$PWD}")"
+toolkit_home="$(resolve_toolkit_home "$target_dir")"
 mode="$(read_maturity_mode "$target_dir")"
 mode="$(trim_whitespace "$mode")"
 mode="${mode:-prototype}"
@@ -169,7 +170,7 @@ if [[ "$hotfix_status" == "active" || "$continuity_status" == "stale" || "$stale
 elif [[ -n "$active_workspace_path" ]]; then
   recommended_startup_profile="minimal"
 fi
-next_recommended_command="$(if [[ -n "$active_task" ]]; then printf '/home/eyal/system-docs/methodology/progress-checkpoint.sh --task %q --summary %q %q' "$active_task" "Update progress and verification state." "$target_dir"; else printf '/home/eyal/system-docs/methodology/methodology-entry.sh --profile %q %q' "$recommended_startup_profile" "$target_dir"; fi)"
+next_recommended_command="$(if [[ -n "$active_task" ]]; then printf '%q --task %q --summary %q %q' "$toolkit_home/progress-checkpoint.sh" "$active_task" "Update progress and verification state." "$target_dir"; else printf '%q --profile %q %q' "$toolkit_home/methodology-entry.sh" "$recommended_startup_profile" "$target_dir"; fi)"
 
 cat > "$(project_file_path "$target_dir" "methodology-state.json")" <<EOF
 {

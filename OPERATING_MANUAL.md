@@ -5,8 +5,27 @@ This manual explains what the methodology is, how it is meant to be used in prac
 Use this document when you want one end-to-end explanation instead of jumping between the README, templates, and helper scripts.
 
 Source repo boundary note:
-- `/home/eyal/system-docs/methodology` is the methodology source git repo.
-- `/home/eyal/system-docs` may contain unrelated system-doc files and should not be treated as the methodology source boundary.
+- this cloned `methodology/` directory is the methodology source git repo
+- the parent directory may contain unrelated files and should not be treated as the methodology source boundary
+
+## Installing The Toolkit On Linux Or WSL
+
+After cloning the methodology repo on another machine, run:
+
+```bash
+cd /path/to/cloned/methodology
+./install-toolkit.sh
+```
+
+That does three things:
+- writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`
+- installs a small `mtool` wrapper in `~/.local/bin`
+- makes project bootstraps record the cloned toolkit path in `methodology/toolkit-path.txt`
+
+Portable project behavior then works like this:
+- if `METHODOLOGY_HOME` is set, use it
+- otherwise project flows can read `methodology/toolkit-path.txt`
+- generated next-step commands should resolve through that toolkit home instead of a machine-specific path
 
 ## What This Methodology Is
 

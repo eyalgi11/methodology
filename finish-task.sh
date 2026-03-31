@@ -109,7 +109,7 @@ if [[ -z "$summary" ]]; then
   summary="$task completed and accepted."
 fi
 if [[ -z "$next_step" ]]; then
-  next_step="Start the next ready task with /home/eyal/system-docs/methodology/next-task.sh."
+  next_step="Start the next ready task with $(toolkit_script_path "$target_dir" "next-task.sh")."
 fi
 
 finish_args=(--task "$task" --summary "$summary" --next-step "$next_step" --health "$health")

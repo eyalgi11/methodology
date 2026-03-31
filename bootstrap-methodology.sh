@@ -56,6 +56,7 @@ fi
 target_dir="$(resolve_target_dir "$target_dir_arg")"
 ensure_git_repo "$target_dir"
 mkdir -p "$target_dir/$PROJECT_METHODOLOGY_DIR_NAME"
+write_toolkit_path_hint "$target_dir"
 
 copy_if_missing() {
   local src="$1"
@@ -68,6 +69,19 @@ copy_if_missing() {
 
   mkdir -p "$(dirname "$dst")"
   cp "$src" "$dst"
+  if [[ -f "$dst" ]]; then
+    python3 - "$dst" "$SCRIPT_DIR" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+toolkit_home = sys.argv[2]
+text = path.read_text()
+updated = text.replace("__METHODOLOGY_HOME__", toolkit_home)
+if updated != text:
+    path.write_text(updated)
+PY
+  fi
   echo "create $dst"
 }
 

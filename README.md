@@ -1,10 +1,26 @@
 # Methodology Templates
 
-Startup-style operating templates for new software projects under `/home/eyal`.
+Startup-style operating templates for new software projects, designed to work from a cloned toolkit repo on Linux and WSL.
 
 Repo boundary note:
 - `/home/eyal/system-docs/methodology` is its own git repo now.
 - `/home/eyal/system-docs` may still contain unrelated system-doc files, but methodology-source work should use git from the `methodology/` directory itself.
+
+## Install On Another Machine
+
+After cloning this repo on another Linux or WSL machine:
+
+```bash
+cd /path/to/cloned/methodology
+./install-toolkit.sh
+```
+
+That writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`, installs a small `mtool` wrapper in `~/.local/bin`, and lets project bootstraps record the correct toolkit path in `methodology/toolkit-path.txt`.
+
+Portable runtime rules:
+- project bootstraps write `methodology/toolkit-path.txt` automatically
+- generated guidance should resolve through `METHODOLOGY_HOME` or that project-local toolkit path file
+- `./portability-check.sh` is the source-repo guard against machine-specific runtime paths
 
 If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:
 - [METHODOLOGY_PRINCIPLES.md](/home/eyal/system-docs/methodology/METHODOLOGY_PRINCIPLES.md)

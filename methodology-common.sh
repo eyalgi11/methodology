@@ -3,6 +3,7 @@ set -euo pipefail
 
 METHODOLOGY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_METHODOLOGY_DIR_NAME="methodology"
+readonly PROJECT_METHODOLOGY_TOOLKIT_HINT_FILE="toolkit-path.txt"
 readonly METHODOLOGY_SCHEMA_VERSION="2026-03-26.1"
 readonly METHODOLOGY_GENERATOR_VERSION="methodology-toolkit-2026-03-26.1"
 readonly CONTEXT_BUDGET_CORE_CONTEXT_LINES=150
@@ -819,6 +820,55 @@ display_project_relpath() {
   else
     printf '%s\n' "$relative_path"
   fi
+}
+
+project_toolkit_hint_file() {
+  local target_dir="$1"
+  project_file_path "$target_dir" "$PROJECT_METHODOLOGY_TOOLKIT_HINT_FILE"
+}
+
+valid_toolkit_home() {
+  local candidate="${1:-}"
+  [[ -n "$candidate" && -d "$candidate" && -f "$candidate/methodology-common.sh" && -x "$candidate/methodology-entry.sh" ]]
+}
+
+resolve_toolkit_home() {
+  local target_dir="${1:-$PWD}"
+  local candidate=""
+  local hint_file=""
+  target_dir="$(resolve_target_dir "$target_dir")"
+
+  candidate="${METHODOLOGY_HOME:-}"
+  if valid_toolkit_home "$candidate"; then
+    cd "$candidate" && pwd
+    return 0
+  fi
+
+  hint_file="$(project_toolkit_hint_file "$target_dir")"
+  if [[ -f "$hint_file" ]]; then
+    candidate="$(head -n 1 "$hint_file" 2>/dev/null || true)"
+    candidate="$(trim_whitespace "$candidate")"
+    if valid_toolkit_home "$candidate"; then
+      cd "$candidate" && pwd
+      return 0
+    fi
+  fi
+
+  printf '%s\n' "$METHODOLOGY_DIR"
+}
+
+toolkit_script_path() {
+  local target_dir="$1"
+  local script_name="$2"
+  printf '%s/%s\n' "$(resolve_toolkit_home "$target_dir")" "$script_name"
+}
+
+write_toolkit_path_hint() {
+  local target_dir="$1"
+  local hint_file
+  hint_file="$(project_toolkit_hint_file "$target_dir")"
+  mkdir -p "$(dirname "$hint_file")"
+  printf '%s\n' "$METHODOLOGY_DIR" > "$hint_file"
 }
 
 normalize_startup_profile() {

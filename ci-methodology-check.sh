@@ -46,6 +46,7 @@ run_check() {
     mode) "$SCRIPT_DIR/mode-check.sh" "$target_dir" >/dev/null 2>&1 ;;
     decision_review) "$SCRIPT_DIR/decision-review.sh" "$target_dir" >/dev/null 2>&1 ;;
     observable_compliance) "$SCRIPT_DIR/observable-compliance-check.sh" "$target_dir" >/dev/null 2>&1 ;;
+    portability) "$SCRIPT_DIR/portability-check.sh" "$target_dir" >/dev/null 2>&1 ;;
     registry)
       [[ -f "$target_dir/METHODOLOGY_REGISTRY.md" ]] || return 0
       "$SCRIPT_DIR/methodology-registry-check.sh" "$target_dir" >/dev/null 2>&1
@@ -58,7 +59,7 @@ if [[ -f "$target_dir/METHODOLOGY_REGISTRY.md" ]]; then
 fi
 
 if [[ "$mode" == "template_source" ]]; then
-  checks=("registry" "mode")
+  checks=("registry" "portability" "mode")
 fi
 
 for check_name in "${checks[@]}"; do

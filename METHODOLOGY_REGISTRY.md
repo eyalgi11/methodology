@@ -17,14 +17,14 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 
 ## Registry Rules
 
-- Every `.sh`, `.md`, and `.json` artifact in `/home/eyal/system-docs/methodology` must be listed here exactly once.
+- Every `.sh`, `.md`, and `.json` artifact in this methodology source repo must be listed here exactly once.
 - State changes must be updated here in the same change that changes the tooling.
 - `core` should stay small and reflect the real default path.
 - `conditional` should name a concrete trigger or use case.
 - `manual` is acceptable for low-frequency tools; it should not silently become a required dependency.
 - `experimental` should either be promoted, redesigned, or removed after enough real usage.
 - `template-only` does not mean unimportant. It means the source repo stores the template, while real usage happens in project copies.
-- Validate coverage with `/home/eyal/system-docs/methodology/methodology-registry-check.sh`.
+- Validate coverage with `./methodology-registry-check.sh`.
 
 ## Core
 
@@ -104,6 +104,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `incident-close.sh` | script | `manual` | Explicit incident close flow. |
 | `incident-open.sh` | script | `manual` | Explicit incident open flow. |
 | `install-methodology-hooks.sh` | script | `manual` | Opt-in git hooks. |
+| `install-toolkit.sh` | script | `manual` | Registers the cloned methodology repo as the local toolkit install for Linux/WSL and writes `METHODOLOGY_HOME` config plus a small wrapper. |
 | `launch-playwriter-brave.sh` | script | `manual` | Launches a real Brave profile for Playwriter-based browser automation, prefers a visible profile with the installed Playwriter extension, and converts local file targets into localhost browser URLs automatically. |
 | `methodology-registry-check.sh` | script | `manual` | Verifies registry coverage and state validity in the methodology source repo. |
 | `playwriter-self-check.sh` | script | `manual` | Validates the full Playwriter self-launch path, including Brave availability, extension detection, local-file bridge reachability, browser connection, and optional smoke navigation. |
@@ -112,6 +113,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `next-task.sh` | script | `manual` | Preferred explicit “continue to the next ready task” flow with local commit when changed. |
 | `plan-task.sh` | script | `manual` | Optional task/spec planning wrapper. |
 | `project-bootstrap-profile.sh` | script | `manual` | Profile-specific bootstrap instead of the default path. |
+| `portability-check.sh` | script | `manual` | Flags machine-specific runtime paths in shell scripts so the toolkit stays portable across Linux/WSL installs. |
 | `record-exception.sh` | script | `manual` | Explicit process-exception logging helper. |
 | `render-methodology-audit.sh` | script | `manual` | Generates a static HTML methodology audit dashboard from real repo state. |
 | `release-cut.sh` | script | `manual` | Explicit release-prep flow. |

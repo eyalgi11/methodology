@@ -3,11 +3,13 @@
 This repository is methodology-managed.
 
 ## Entry Rule
+- Resolve the methodology toolkit root from `METHODOLOGY_HOME` when it is set. Otherwise use `methodology/toolkit-path.txt`, which bootstrap/adopt writes automatically.
+- In the instructions below, `__METHODOLOGY_HOME__` means that resolved toolkit root on the current machine.
 - When a user starts new work, says `start with the methodology`, asks to begin from scratch, or resumes after a break, do not answer with generic methodology advice first.
 - First enter the project operationally:
-  - run `/home/eyal/system-docs/methodology/methodology-entry.sh .` or perform its equivalent steps
+  - run `__METHODOLOGY_HOME__/methodology-entry.sh .` or perform its equivalent steps
   - read `methodology/methodology-state.json` first when it exists
-  - run `/home/eyal/system-docs/methodology/work-preflight.sh .` before substantial implementation when you need one short readiness/remediation summary
+  - run `__METHODOLOGY_HOME__/work-preflight.sh .` before substantial implementation when you need one short readiness/remediation summary
   - choose a startup profile: `minimal`, `normal`, or `deep`
   - read `methodology/CORE_CONTEXT.md`, `methodology/TASKS.md`, `methodology/SESSION_STATE.md`, and `methodology/HANDOFF.md` first
 - use `methodology/WORK_INDEX.md` to find the active task workspace before loading detailed in-flight state
@@ -52,9 +54,9 @@ This repository is methodology-managed.
 - Keep shared top-level continuity files compact; put detailed in-flight state in `methodology/work/<task-slug>/STATE.md` and `methodology/work/<task-slug>/HANDOFF.md`.
 - Use leased claims with heartbeats under `methodology/claims/` rather than treating `ACTIVE_CLAIMS.md` as the only claim record.
 - Treat `ACTIVE_CLAIMS.md` as the human-facing live index only; machine-readable claim companions live under `methodology/claims/<claim-id>.json`.
-- Use `/home/eyal/system-docs/methodology/claim-diff-check.sh .` when multi-agent edits need a quick conflict check against claimed files.
-- Use `/home/eyal/system-docs/methodology/agent-merge-check.sh .` before merge or handoff of claimed work so stale claims, ownership conflicts, ready-for-merge flags, rebase requirements, and verification status are checked together.
-- Use `/home/eyal/system-docs/methodology/worker-context-pack.sh --claim-id <claim-id> .` to build a worker-specific resume bundle after compaction or handoff.
+- Use `__METHODOLOGY_HOME__/claim-diff-check.sh .` when multi-agent edits need a quick conflict check against claimed files.
+- Use `__METHODOLOGY_HOME__/agent-merge-check.sh .` before merge or handoff of claimed work so stale claims, ownership conflicts, ready-for-merge flags, rebase requirements, and verification status are checked together.
+- Use `__METHODOLOGY_HOME__/worker-context-pack.sh --claim-id <claim-id> .` to build a worker-specific resume bundle after compaction or handoff.
 - If non-trivial work collapses to single-agent execution, record the reason in `PROCESS_EXCEPTIONS.md`.
 - For risky changes, follow the approval matrix in `AGENT_TEAM.md` instead of self-approving by default.
 
@@ -62,7 +64,7 @@ This repository is methodology-managed.
 - Keep the local runtime contract current in `LOCAL_ENV.md`.
 - Use named runtime profiles in `LOCAL_ENV.md` and `COMMANDS.md` for fresh-runtime vs warm-runtime startup paths when local state meaningfully affects verification or developer flow.
 - Prefer a fresh-agent reset with a strong handoff over repeated in-place compaction when long-running work starts drifting, context anxiety appears, or the same agent keeps losing coherence.
-- If runtime usage breaks a finished or in-flight slice, switch into formal hotfix mode with `/home/eyal/system-docs/methodology/enter-hotfix.sh .` or its equivalent steps.
+- If runtime usage breaks a finished or in-flight slice, switch into formal hotfix mode with `__METHODOLOGY_HOME__/enter-hotfix.sh .` or its equivalent steps.
 - When hotfix mode is active, `TASKS.md`, `SESSION_STATE.md`, `HANDOFF.md`, and `HOTFIX.md` must reflect runtime stabilization instead of the interrupted roadmap task.
 - Do not claim cold-start-ready manual testing unless it was verified from zero running processes.
 - Manual QA handoff must include what changed, which files changed, what was verified, the exact commands to run, and what the human should check.
@@ -81,11 +83,11 @@ This repository is methodology-managed.
   - the shared risk class (`R0` / `R1` / `R2` / `R3`)
   - for production-impacting work, the release risk
 - If changed files touch web UI behavior, the verification path must include the intended browser automation flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
-- When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a project-root wrapper script under `scripts/`. Treat first-time extension installation or enablement as a one-time browser bootstrap, not part of every verification run.
-- The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the Playwriter launcher should run that updater before browser automation by default.
+- When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `__METHODOLOGY_HOME__/launch-playwriter-brave.sh` or a project-root wrapper script under `scripts/`. Treat first-time extension installation or enablement as a one-time browser bootstrap, not part of every verification run.
+- The methodology should keep the Playwriter CLI updated automatically through `__METHODOLOGY_HOME__/ensure-playwriter-cli.sh`, and the Playwriter launcher should run that updater before browser automation by default.
 - The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
 - The Playwriter Brave launch path may ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
-- When a browser automation target is a local HTML file or other local page, convert it to a localhost URL with `/home/eyal/system-docs/methodology/serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and the Brave Playwriter launcher may use a localhost HTTP fallback for local file targets when the current Playwriter environment cannot accept the local HTTPS certificate cleanly.
+- When a browser automation target is a local HTML file or other local page, convert it to a localhost URL with `__METHODOLOGY_HOME__/serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and the Brave Playwriter launcher may use a localhost HTTP fallback for local file targets when the current Playwriter environment cannot accept the local HTTPS certificate cleanly.
 - For non-trivial web UI implementation, prefer `frontend-design` as the frontend craft skill after the Stitch design basis exists, unless the change is trivial or the repo already has a tightly constraining design system.
 - If changed files touch mobile app/device behavior, the verification path must include the intended full native Appium flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
 - If changed files touch desktop app behavior, the verification path must include the intended Playwright/Electron or native desktop automation flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
@@ -102,20 +104,20 @@ This repository is methodology-managed.
 - State who approved the exception and when it expires.
 
 ## Startup Behavior
-- If the methodology files are missing, bootstrap them with `/home/eyal/system-docs/methodology/bootstrap-methodology.sh .` before substantial planning or implementation.
+- If the methodology files are missing, bootstrap them with `__METHODOLOGY_HOME__/bootstrap-methodology.sh .` before substantial planning or implementation.
 - Methodology-managed projects must be git repos. `methodology-entry.sh`, `init-project.sh`, and `adopt-methodology.sh` initialize git automatically when `.git` is missing.
 - Core surface is the default bootstrap for prototype-style repos; use `--surface full` only when you intentionally want the full template set up front.
 - If the project already has the methodology files, preserve them and work from their current contents.
 - Treat `methodology/PROJECT_BRIEF.md`, `methodology/TASKS.md`, `methodology/SESSION_STATE.md`, and `methodology/HANDOFF.md` as the first source of truth for startup and resume behavior.
-- For changes to the methodology source repo itself, prefer `/home/eyal/system-docs/methodology/methodology-source-work.sh start` before substantial work, `/home/eyal/system-docs/methodology/methodology-source-work.sh finish` after verification, and `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` when the methodology-source change is actually ready to close out.
+- For changes to the methodology source repo itself, prefer `__METHODOLOGY_HOME__/methodology-source-work.sh start` before substantial work, `__METHODOLOGY_HOME__/methodology-source-work.sh finish` after verification, and `__METHODOLOGY_HOME__/methodology-source-work.sh commit` when the methodology-source change is actually ready to close out.
 - For repeated user or team workflows, prefer stable bash entrypoints under the project-root `scripts/` directory instead of leaving the command only inline in docs or chat.
 - Keep `COMMANDS.md` pointing to `scripts/*.sh` for repeated workflows; inline commands are acceptable for occasional or one-off use.
 - Use confidence language precisely:
   - `implemented` when the change exists
   - `verified` when the actual target path passed
   - `stable` only when stronger repeated or cross-path verification exists
-- When a task is truly complete and accepted, prefer `/home/eyal/system-docs/methodology/finish-task.sh .` over ad hoc manual closing so verification, closure, and the local git commit stay aligned.
-- When the user explicitly wants to continue to the next task, prefer `/home/eyal/system-docs/methodology/next-task.sh .` so the next ready task, start checkpoint, and local git commit stay aligned.
+- When a task is truly complete and accepted, prefer `__METHODOLOGY_HOME__/finish-task.sh .` over ad hoc manual closing so verification, closure, and the local git commit stay aligned.
+- When the user explicitly wants to continue to the next task, prefer `__METHODOLOGY_HOME__/next-task.sh .` so the next ready task, start checkpoint, and local git commit stay aligned.
 - These task-transition helpers create local commits when there are changes; they do not push automatically.
 - Treat `METRICS.md` as an operating document. Important metrics should include owner, source, cadence, baseline, threshold, and action-if-red.
 - Keep source proof and dogfood proof distinct:
@@ -147,6 +149,6 @@ This repository is methodology-managed.
   - `WORK_INDEX.md`: 50 active entries
   - `work/<task>/STATE.md`: 200 lines
   - `work/<task>/HANDOFF.md`: 100 lines
-- Keep active specs live, but archive oversized inactive spec/log docs with `/home/eyal/system-docs/methodology/archive-cold-docs.sh` so large historical docs do not stay in the active working path.
-- Before opening archived docs directly, prefer `/home/eyal/system-docs/methodology/lookup-archived-doc.sh --query "..." .` or `docs-archive-index.json` so retrieval is driven by compact metadata rather than loading large archive files blindly.
-- For existing codebases that do not yet have the methodology, prefer `/home/eyal/system-docs/methodology/adopt-methodology.sh .` so the repo is retrofitted incrementally rather than treated like a blank new project.
+- Keep active specs live, but archive oversized inactive spec/log docs with `__METHODOLOGY_HOME__/archive-cold-docs.sh` so large historical docs do not stay in the active working path.
+- Before opening archived docs directly, prefer `__METHODOLOGY_HOME__/lookup-archived-doc.sh --query "..." .` or `docs-archive-index.json` so retrieval is driven by compact metadata rather than loading large archive files blindly.
+- For existing codebases that do not yet have the methodology, prefer `__METHODOLOGY_HOME__/adopt-methodology.sh .` so the repo is retrofitted incrementally rather than treated like a blank new project.

@@ -54,8 +54,8 @@ Defaults:
   http port:      starting at $DEFAULT_HTTP_START_PORT
 
 Examples:
-  serve-local-page.sh /home/eyal/system-docs/methodology/methodology-audit.html
-  serve-local-page.sh file:///home/eyal/projects/foo/methodology/methodology-audit.html
+  serve-local-page.sh ./methodology/methodology-audit.html
+  serve-local-page.sh file:///path/to/project/methodology/methodology-audit.html
 EOF
 }
 
