@@ -6,6 +6,7 @@ PLAYWRITER_EXTENSION_ID="${PLAYWRITER_EXTENSION_ID:-jfeammnjpkecdekppnclgkkffahn
 PLAYWRITER_EXTENSION_DIR="${PLAYWRITER_EXTENSION_DIR:-}"
 PLAYWRITER_LOCAL_FILE_SCHEME="${PLAYWRITER_LOCAL_FILE_SCHEME:-http}"
 PLAYWRITER_AUTO_UPDATE="${PLAYWRITER_AUTO_UPDATE:-1}"
+PLAYWRITER_REMOTE_DEBUG_PORT="${PLAYWRITER_REMOTE_DEBUG_PORT:-}"
 
 resolve_target_user() {
   local user="${PLAYWRITER_BROWSER_USER:-${SUDO_USER:-}}"
@@ -31,6 +32,25 @@ resolve_user_home() {
   else
     printf '%s' "$HOME"
   fi
+}
+
+build_desktop_env_args() {
+  local key
+  for key in \
+    HOME \
+    XDG_RUNTIME_DIR \
+    DISPLAY \
+    WAYLAND_DISPLAY \
+    XAUTHORITY \
+    DBUS_SESSION_BUS_ADDRESS \
+    XDG_SESSION_TYPE \
+    XDG_CURRENT_DESKTOP \
+    DESKTOP_SESSION
+  do
+    if [[ -n "${!key:-}" ]]; then
+      printf '%s\0%s=%s\0' "$key" "$key" "${!key}"
+    fi
+  done
 }
 
 profile_has_extension() {
@@ -64,6 +84,14 @@ detect_extension_dir() {
   local extensions_root="$BRAVE_USER_DATA_DIR/$profile_name/Extensions/$PLAYWRITER_EXTENSION_ID"
   [[ -d "$extensions_root" ]] || return 0
   find "$extensions_root" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1
+}
+
+read_env_args() {
+  local env_pairs=()
+  while IFS= read -r -d '' _key && IFS= read -r -d '' _pair; do
+    env_pairs+=("$_pair")
+  done < <(build_desktop_env_args)
+  printf '%s\0' "${env_pairs[@]}"
 }
 
 if [[ -z "$PLAYWRITER_BRAVE_PROFILE_DIR" ]]; then
@@ -103,6 +131,8 @@ Environment overrides:
   PLAYWRITER_EXTENSION_DIR       Optional unpacked extension path to load
   PLAYWRITER_LOCAL_FILE_SCHEME   Local file bridge scheme for file targets
                                  (`http` or `https`, default: http)
+  PLAYWRITER_REMOTE_DEBUG_PORT   Optional Chrome DevTools port for direct-mode
+                                 automation fallback (for example: 9222)
 
 Notes:
   - By default this reuses a real Brave profile so Playwriter can use the
@@ -154,6 +184,24 @@ if [[ -z "$browser_bin" ]]; then
   exit 1
 fi
 
+desktop_env_args=()
+while IFS= read -r -d '' item; do
+  [[ -n "$item" ]] && desktop_env_args+=("$item")
+done < <(read_env_args)
+
+for i in "${!desktop_env_args[@]}"; do
+  case "${desktop_env_args[$i]}" in
+    HOME=*) desktop_env_args[$i]="HOME=$target_home" ;;
+    XDG_RUNTIME_DIR=*) desktop_env_args[$i]="XDG_RUNTIME_DIR=/run/user/$(id -u "$target_user")" ;;
+  esac
+done
+if [[ " ${desktop_env_args[*]} " != *" HOME="* ]]; then
+  desktop_env_args+=("HOME=$target_home")
+fi
+if [[ " ${desktop_env_args[*]} " != *" XDG_RUNTIME_DIR="* ]]; then
+  desktop_env_args+=("XDG_RUNTIME_DIR=/run/user/$(id -u "$target_user")")
+fi
+
 args=(
   "$browser_bin"
   "--new-window"
@@ -164,6 +212,10 @@ args=(
   "--allowlisted-extension-id=$PLAYWRITER_EXTENSION_ID"
   "--auto-accept-this-tab-capture"
 )
+
+if [[ -n "$PLAYWRITER_REMOTE_DEBUG_PORT" ]]; then
+  args+=("--remote-debugging-port=$PLAYWRITER_REMOTE_DEBUG_PORT")
+fi
 
 launch_description=""
 extension_message=""
@@ -204,7 +256,7 @@ args+=("$url")
 
 if (( print_only == 1 )); then
   if [[ "$(id -un)" != "$target_user" ]]; then
-    printf '%q ' sudo -u "$target_user" env "HOME=$target_home" "XDG_RUNTIME_DIR=/run/user/$(id -u "$target_user")"
+    printf '%q ' sudo -u "$target_user" env "${desktop_env_args[@]}"
   fi
   printf '%q ' "${args[@]}"
   printf '\n'
@@ -214,10 +266,12 @@ fi
 if [[ "$(id -un)" == "$target_user" ]]; then
   nohup "${args[@]}" </dev/null >/dev/null 2>&1 &
 else
+  printf -v launch_cmd '%q ' env "${desktop_env_args[@]}" "${args[@]}"
+  launch_cmd="${launch_cmd}</dev/null >/dev/null 2>&1 &"
   if command -v sudo >/dev/null 2>&1; then
-    nohup sudo -u "$target_user" env "HOME=$target_home" "XDG_RUNTIME_DIR=/run/user/$(id -u "$target_user")" "${args[@]}" </dev/null >/dev/null 2>&1 &
+    sudo -u "$target_user" bash -lc "nohup ${launch_cmd}" </dev/null >/dev/null 2>&1 &
   elif command -v runuser >/dev/null 2>&1; then
-    nohup runuser -u "$target_user" -- env "HOME=$target_home" "XDG_RUNTIME_DIR=/run/user/$(id -u "$target_user")" "${args[@]}" </dev/null >/dev/null 2>&1 &
+    runuser -u "$target_user" -- bash -lc "nohup ${launch_cmd}" </dev/null >/dev/null 2>&1 &
   else
     echo "Need sudo or runuser to launch Brave as $target_user." >&2
     exit 1
