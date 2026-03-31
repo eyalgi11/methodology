@@ -94,6 +94,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `DEFAULT_BEHAVIOR.md` | doc | `manual` | Short default-path explanation of what the methodology usually does. |
 | `METHODOLOGY_LAYERS.md` | doc | `manual` | Compact map of what is core, optional, advanced, and compatibility-only. |
 | `METHODOLOGY_CONTROL_LOOP.md` | doc | `manual` | Compact rule for how the methodology should keep itself aligned with user intent. |
+| `PORTABILITY.md` | doc | `manual` | Portable install and Linux/WSL usage guide for cloned methodology repos. |
 | `reference/USER_FACING_FILES.md` | doc | `manual` | Compact reference for which methodology files are primarily user-facing versus internal. |
 | `archive-methodology.sh` | script | `manual` | Explicit methodology archive/cleanup operation. |
 | `ci-methodology-check.sh` | script | `manual` | CI-oriented methodology validation entrypoint. |

@@ -1,0 +1,34 @@
+name: Methodology CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  methodology:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install toolkit locally
+        run: ./install-toolkit.sh --no-shell-rc
+
+      - name: Run portability check
+        run: ./portability-check.sh .
+
+      - name: Run registry check
+        run: ./methodology-registry-check.sh .
+
+      - name: Run CI methodology checks
+        run: ./ci-methodology-check.sh .
+
+      - name: Smoke test bootstrap path
+        run: |
+          set -euo pipefail
+          tmpdir="$(mktemp -d)"
+          ./bootstrap-methodology.sh "$tmpdir/project"
+          test -f "$tmpdir/project/methodology/toolkit-path.txt"

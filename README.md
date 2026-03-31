@@ -3,8 +3,8 @@
 Startup-style operating templates for new software projects, designed to work from a cloned toolkit repo on Linux and WSL.
 
 Repo boundary note:
-- `/home/eyal/system-docs/methodology` is its own git repo now.
-- `/home/eyal/system-docs` may still contain unrelated system-doc files, but methodology-source work should use git from the `methodology/` directory itself.
+- this cloned `methodology/` directory is its own git repo
+- a parent directory may still contain unrelated files, so methodology-source work should use git from the `methodology/` directory itself
 
 ## Install On Another Machine
 
@@ -21,14 +21,17 @@ Portable runtime rules:
 - project bootstraps write `methodology/toolkit-path.txt` automatically
 - generated guidance should resolve through `METHODOLOGY_HOME` or that project-local toolkit path file
 - `./portability-check.sh` is the source-repo guard against machine-specific runtime paths
+- from the methodology repo root, examples in this README use `./script.sh`
+- from elsewhere on the same machine after install, use `mtool script.sh`
 
 If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:
-- [METHODOLOGY_PRINCIPLES.md](/home/eyal/system-docs/methodology/METHODOLOGY_PRINCIPLES.md)
-- [DEFAULT_BEHAVIOR.md](/home/eyal/system-docs/methodology/DEFAULT_BEHAVIOR.md)
-- [METHODOLOGY_LAYERS.md](/home/eyal/system-docs/methodology/METHODOLOGY_LAYERS.md)
-- [METHODOLOGY_CONTROL_LOOP.md](/home/eyal/system-docs/methodology/METHODOLOGY_CONTROL_LOOP.md)
+- [METHODOLOGY_PRINCIPLES.md](./METHODOLOGY_PRINCIPLES.md)
+- [DEFAULT_BEHAVIOR.md](./DEFAULT_BEHAVIOR.md)
+- [METHODOLOGY_LAYERS.md](./METHODOLOGY_LAYERS.md)
+- [METHODOLOGY_CONTROL_LOOP.md](./METHODOLOGY_CONTROL_LOOP.md)
+- [PORTABILITY.md](./PORTABILITY.md)
 
-For one end-to-end explanation of what the methodology does, how the main files fit together, and which scripts to use in the normal lifecycle, read [OPERATING_MANUAL.md](/home/eyal/system-docs/methodology/OPERATING_MANUAL.md).
+For one end-to-end explanation of what the methodology does, how the main files fit together, and which scripts to use in the normal lifecycle, read [OPERATING_MANUAL.md](./OPERATING_MANUAL.md).
 
 ## Governance
 - Agents may improve the global methodology when real project work reveals a recurring cross-project gap, noisy check, missing automation, or unclear workflow.
@@ -43,7 +46,7 @@ For one end-to-end explanation of what the methodology does, how the main files 
   - `experimental`: available but not trusted as default
   - `deprecated`: avoid for new work
 - `template-only`: source template that becomes live only after it is copied into a project
-- Validate registry coverage with `/home/eyal/system-docs/methodology/methodology-registry-check.sh`.
+- Validate registry coverage with `./methodology-registry-check.sh`.
 
 ## Read This First
 
@@ -254,67 +257,67 @@ Template-only:
 Run the bootstrap helper from the project root or pass a target path:
 
 ```bash
-/home/eyal/system-docs/methodology/bootstrap-methodology.sh
-/home/eyal/system-docs/methodology/bootstrap-methodology.sh /path/to/project
+./bootstrap-methodology.sh
+./bootstrap-methodology.sh /path/to/project
 ```
 
 Existing files are preserved. Missing files are created.
 
 ## Automation
 ```bash
-/home/eyal/system-docs/methodology/init-project.sh /path/to/project
-/home/eyal/system-docs/methodology/work-preflight.sh /path/to/project
-/home/eyal/system-docs/methodology/adopt-methodology.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-entry.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-audit.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-status.sh /path/to/project
-/home/eyal/system-docs/methodology/repo-intake.sh /path/to/project
-/home/eyal/system-docs/methodology/begin-work.sh --task "Add billing settings" --state in_progress /path/to/project
-/home/eyal/system-docs/methodology/new-feature.sh --title "Add billing settings" /path/to/project
-/home/eyal/system-docs/methodology/new-experiment.sh --title "Headline variant" --hypothesis "Shorter headline increases signup CTR" --metric "signup CTR" /path/to/project
-/home/eyal/system-docs/methodology/progress-checkpoint.sh --summary "Finished the API wiring" /path/to/project
-/home/eyal/system-docs/methodology/ready-check.sh --task "Add billing settings" /path/to/project
-/home/eyal/system-docs/methodology/move-task.sh --task "Add billing settings" --to ready /path/to/project
-/home/eyal/system-docs/methodology/next-task.sh /path/to/project
-/home/eyal/system-docs/methodology/session-snapshot.sh --next-step "Run the next task" /path/to/project
-/home/eyal/system-docs/methodology/verify-project.sh /path/to/project
-/home/eyal/system-docs/methodology/context-pack.sh --output /tmp/context.md /path/to/project
-/home/eyal/system-docs/methodology/worker-context-pack.sh --claim-id claim-2026-03-21-builder-task /path/to/project
-/home/eyal/system-docs/methodology/agent-merge-check.sh --claim-id claim-2026-03-21-builder-task /path/to/project
-/home/eyal/system-docs/methodology/drift-check.sh --verify-commands /path/to/project
-/home/eyal/system-docs/methodology/archive-cold-docs.sh /path/to/project
-/home/eyal/system-docs/methodology/refresh-docs-archive-index.sh /path/to/project
-/home/eyal/system-docs/methodology/lookup-archived-doc.sh --query "billing history" /path/to/project
-/home/eyal/system-docs/methodology/enter-hotfix.sh --summary "Auth login fails in real usage" --interrupted-task "T-014" /path/to/project
-/home/eyal/system-docs/methodology/close-work.sh --task "Add billing settings" /path/to/project
-/home/eyal/system-docs/methodology/sync-docs.sh /path/to/project
-/home/eyal/system-docs/methodology/scaffold-stack.sh --git vite /path/to/project
-/home/eyal/system-docs/methodology/milestone-update.sh /path/to/project
-/home/eyal/system-docs/methodology/release-cut.sh --version v0.1.0 /path/to/project
-/home/eyal/system-docs/methodology/security-review.sh /path/to/project
-/home/eyal/system-docs/methodology/dependency-delta.sh /path/to/project
-/home/eyal/system-docs/methodology/project-dashboard.sh /path/to/project
-/home/eyal/system-docs/methodology/install-methodology-hooks.sh /path/to/project
-/home/eyal/system-docs/methodology/resume-work.sh /path/to/project
-/home/eyal/system-docs/methodology/finish-task.sh --task "Add billing settings" /path/to/project
-/home/eyal/system-docs/methodology/ci-methodology-check.sh /path/to/project
-/home/eyal/system-docs/methodology/plan-task.sh --title "Add billing settings" /path/to/project
-/home/eyal/system-docs/methodology/auto-update-from-git.sh /path/to/project
-/home/eyal/system-docs/methodology/project-bootstrap-profile.sh --git saas-web /path/to/project
-/home/eyal/system-docs/methodology/knowledge-extract.sh /path/to/project
-/home/eyal/system-docs/methodology/test-gap-report.sh /path/to/project
-/home/eyal/system-docs/methodology/incident-open.sh --summary "Checkout outage" /path/to/project
-/home/eyal/system-docs/methodology/incident-close.sh --id 2026-03-06-checkout-outage /path/to/project
-/home/eyal/system-docs/methodology/metrics-check.sh /path/to/project
-/home/eyal/system-docs/methodology/mode-check.sh /path/to/project
-/home/eyal/system-docs/methodology/decision-review.sh /path/to/project
-/home/eyal/system-docs/methodology/observable-compliance-check.sh /path/to/project
-/home/eyal/system-docs/methodology/record-learning.sh --target anti-pattern --summary "Avoid direct lifecycle edits" /path/to/project
-/home/eyal/system-docs/methodology/claim-work.sh --agent agent-a --task "Add billing settings" --file src/app.ts /path/to/project
-/home/eyal/system-docs/methodology/claim-diff-check.sh /path/to/project
-/home/eyal/system-docs/methodology/fix-project-perms.sh /path/to/project
-/home/eyal/system-docs/methodology/upgrade-template-placeholders.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-registry-check.sh
+./init-project.sh /path/to/project
+./work-preflight.sh /path/to/project
+./adopt-methodology.sh /path/to/project
+./methodology-entry.sh /path/to/project
+./methodology-audit.sh /path/to/project
+./methodology-status.sh /path/to/project
+./repo-intake.sh /path/to/project
+./begin-work.sh --task "Add billing settings" --state in_progress /path/to/project
+./new-feature.sh --title "Add billing settings" /path/to/project
+./new-experiment.sh --title "Headline variant" --hypothesis "Shorter headline increases signup CTR" --metric "signup CTR" /path/to/project
+./progress-checkpoint.sh --summary "Finished the API wiring" /path/to/project
+./ready-check.sh --task "Add billing settings" /path/to/project
+./move-task.sh --task "Add billing settings" --to ready /path/to/project
+./next-task.sh /path/to/project
+./session-snapshot.sh --next-step "Run the next task" /path/to/project
+./verify-project.sh /path/to/project
+./context-pack.sh --output /tmp/context.md /path/to/project
+./worker-context-pack.sh --claim-id claim-2026-03-21-builder-task /path/to/project
+./agent-merge-check.sh --claim-id claim-2026-03-21-builder-task /path/to/project
+./drift-check.sh --verify-commands /path/to/project
+./archive-cold-docs.sh /path/to/project
+./refresh-docs-archive-index.sh /path/to/project
+./lookup-archived-doc.sh --query "billing history" /path/to/project
+./enter-hotfix.sh --summary "Auth login fails in real usage" --interrupted-task "T-014" /path/to/project
+./close-work.sh --task "Add billing settings" /path/to/project
+./sync-docs.sh /path/to/project
+./scaffold-stack.sh --git vite /path/to/project
+./milestone-update.sh /path/to/project
+./release-cut.sh --version v0.1.0 /path/to/project
+./security-review.sh /path/to/project
+./dependency-delta.sh /path/to/project
+./project-dashboard.sh /path/to/project
+./install-methodology-hooks.sh /path/to/project
+./resume-work.sh /path/to/project
+./finish-task.sh --task "Add billing settings" /path/to/project
+./ci-methodology-check.sh /path/to/project
+./plan-task.sh --title "Add billing settings" /path/to/project
+./auto-update-from-git.sh /path/to/project
+./project-bootstrap-profile.sh --git saas-web /path/to/project
+./knowledge-extract.sh /path/to/project
+./test-gap-report.sh /path/to/project
+./incident-open.sh --summary "Checkout outage" /path/to/project
+./incident-close.sh --id 2026-03-06-checkout-outage /path/to/project
+./metrics-check.sh /path/to/project
+./mode-check.sh /path/to/project
+./decision-review.sh /path/to/project
+./observable-compliance-check.sh /path/to/project
+./record-learning.sh --target anti-pattern --summary "Avoid direct lifecycle edits" /path/to/project
+./claim-work.sh --agent agent-a --task "Add billing settings" --file src/app.ts /path/to/project
+./claim-diff-check.sh /path/to/project
+./fix-project-perms.sh /path/to/project
+./upgrade-template-placeholders.sh /path/to/project
+./methodology-registry-check.sh
 ```
 
 - `init-project.sh` is the recommended way to create a brand new project directory; it initializes git automatically.
@@ -388,12 +391,12 @@ Existing files are preserved. Missing files are created.
 - When work runs from a sudo/root shell, use `fix-project-perms.sh` or the built-in bootstrap/scaffold hooks so project files stay editable from the normal user shell.
 - `upgrade-template-placeholders.sh` is intended for existing methodology-managed repos that still have older untouched placeholder files and is part of the `mupdate` flow.
 - For web UI projects, treat browser automation as a default verification path in `COMMANDS.md` and feature specs, and use `playwriter` when browser behavior matters unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
-- When `playwriter` is the browser automation path, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a project-root wrapper script under `scripts/`. First-time extension installation or enablement is a one-time bootstrap step; it should not be repeated as part of normal verification.
-- The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the Brave launcher should run that updater before Playwriter-based browser automation by default.
+- When `playwriter` is the browser automation path, prefer a real visible Brave profile launched through `./launch-playwriter-brave.sh` from the toolkit repo or a project-root wrapper script under `scripts/`. First-time extension installation or enablement is a one-time bootstrap step; it should not be repeated as part of normal verification.
+- The methodology should keep the Playwriter CLI updated automatically through `./ensure-playwriter-cli.sh`, and the Brave launcher should run that updater before Playwriter-based browser automation by default.
 - The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
-- When the Playwriter self-launch path is uncertain, run `/home/eyal/system-docs/methodology/playwriter-self-check.sh` so the browser, extension, localhost bridge, and smoke navigation are validated in one place before deeper debugging.
+- When the Playwriter self-launch path is uncertain, run `./playwriter-self-check.sh` so the browser, extension, localhost bridge, and smoke navigation are validated in one place before deeper debugging.
 - That Playwriter Brave launch path is allowed to ignore localhost certificate errors so HTTPS localhost pages can still be automated without weakening the user's normal browsing habits outside that launched profile.
-- When the browser automation target is a local HTML file, local report, or generated page, convert it to a localhost URL with `/home/eyal/system-docs/methodology/serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and `launch-playwriter-brave.sh` now does that automatically for local file targets with a localhost HTTP fallback when the current Playwriter environment rejects the local HTTPS certificate.
+- When the browser automation target is a local HTML file, local report, or generated page, convert it to a localhost URL with `./serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and `launch-playwriter-brave.sh` now does that automatically for local file targets with a localhost HTTP fallback when the current Playwriter environment rejects the local HTTPS certificate.
 - For mobile app projects, treat full native Appium verification as the default verification path in `COMMANDS.md` and feature specs, and use `appium-mobile` when device behavior matters unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
 - For desktop app projects, treat desktop automation as a default verification path in `COMMANDS.md` and feature specs; use Playwright/Electron for browser-tech desktop apps and native desktop automation such as Appium Mac2 or Windows driver / WinAppDriver for native desktop apps unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
 - `context-pack.sh` is useful before handoff or after conversation compaction.

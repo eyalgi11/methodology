@@ -7,6 +7,8 @@ Use this document when you want one end-to-end explanation instead of jumping be
 Source repo boundary note:
 - this cloned `methodology/` directory is the methodology source git repo
 - the parent directory may contain unrelated files and should not be treated as the methodology source boundary
+- commands below assume you are running them from the methodology repo root with `./script.sh`
+- after `./install-toolkit.sh`, you can run the same helpers from elsewhere with `mtool script.sh`
 
 ## Installing The Toolkit On Linux Or WSL
 
@@ -42,7 +44,7 @@ Its job is to make project state recoverable from disk instead of relying on cha
 - release, incident, and security discipline when the project needs it
 
 The methodology is designed for:
-- new software projects under `/home/eyal`
+- new software projects on Linux or WSL workstations
 - existing repos that need a structured operating layer
 - limited-context or non-persistent agent sessions
 
@@ -102,7 +104,7 @@ The source repo classifies methodology artifacts into these states:
 - `deprecated`: avoid for new work
 - `template-only`: source template copied into project repos
 
-The source-of-truth classification lives in [METHODOLOGY_REGISTRY.md](/home/eyal/system-docs/methodology/METHODOLOGY_REGISTRY.md).
+The source-of-truth classification lives in [METHODOLOGY_REGISTRY.md](./METHODOLOGY_REGISTRY.md).
 
 ## Lifecycle Overview
 
@@ -126,7 +128,7 @@ The normal project lifecycle looks like this:
 Use:
 
 ```bash
-/home/eyal/system-docs/methodology/init-project.sh /path/to/project
+./init-project.sh /path/to/project
 ```
 
 This will:
@@ -139,7 +141,7 @@ This will:
 Use:
 
 ```bash
-/home/eyal/system-docs/methodology/adopt-methodology.sh /path/to/project
+./adopt-methodology.sh /path/to/project
 ```
 
 This will:
@@ -153,7 +155,7 @@ This will:
 Use:
 
 ```bash
-/home/eyal/system-docs/methodology/methodology-entry.sh /path/to/project
+./methodology-entry.sh /path/to/project
 ```
 
 This is the standard entry flow for both new and existing methodology-managed repos.
@@ -480,18 +482,18 @@ Important script:
 ### Web UI
 
 Browser automation is first-class for web behavior changes.
-When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a stable project-root wrapper in `scripts/`.
+When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `./launch-playwriter-brave.sh` or a stable project-root wrapper in `scripts/`.
 Treat Playwriter extension installation or enablement in that profile as a one-time bootstrap step, not as a repeated manual step during normal verification.
-The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the launcher should run that updater before Playwriter-based browser automation by default.
+The methodology should keep the Playwriter CLI updated automatically through `./ensure-playwriter-cli.sh`, and the launcher should run that updater before Playwriter-based browser automation by default.
 The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
 That Playwriter Brave launch path is also allowed to ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
-When the browser target is a local HTML file, report, or generated page, use `/home/eyal/system-docs/methodology/serve-local-page.sh` so browser automation works through localhost instead of raw `file://` navigation. The helper defaults to HTTPS, and the Playwriter launcher may use localhost HTTP fallback when the current browser-automation environment still rejects the local HTTPS certificate.
-When the Playwriter self-launch path is uncertain, run `/home/eyal/system-docs/methodology/playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, browser connection, and smoke navigation.
+When the browser target is a local HTML file, report, or generated page, use `./serve-local-page.sh` so browser automation works through localhost instead of raw `file://` navigation. The helper defaults to HTTPS, and the Playwriter launcher may use localhost HTTP fallback when the current browser-automation environment still rejects the local HTTPS certificate.
+When the Playwriter self-launch path is uncertain, run `./playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, browser connection, and smoke navigation.
 
 ### Methodology Source Work
 
-When changing the methodology source repo itself, use `/home/eyal/system-docs/methodology/methodology-source-work.sh start` before substantial work and `/home/eyal/system-docs/methodology/methodology-source-work.sh finish` afterward.
-When the methodology-source change is actually done and ready to close out, use `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` so the standalone methodology source repo is refreshed, staged, and committed directly.
+When changing the methodology source repo itself, use `./methodology-source-work.sh start` before substantial work and `./methodology-source-work.sh finish` afterward.
+When the methodology-source change is actually done and ready to close out, use `./methodology-source-work.sh commit` so the standalone methodology source repo is refreshed, staged, and committed directly.
 
 That wrapper keeps the control-surface docs visible in the checkpoint and makes the proof model explicit:
 - source repo proves toolkit correctness
@@ -767,7 +769,7 @@ There is now an explicit local git-backed finish/continue path.
 Use:
 
 ```bash
-/home/eyal/system-docs/methodology/finish-task.sh /path/to/project
+./finish-task.sh /path/to/project
 ```
 
 This flow is meant for:
@@ -785,7 +787,7 @@ It will:
 Use:
 
 ```bash
-/home/eyal/system-docs/methodology/next-task.sh /path/to/project
+./next-task.sh /path/to/project
 ```
 
 This will:
@@ -821,7 +823,7 @@ When inactive docs become too large for the hot path:
 Before opening archived docs directly, prefer:
 
 ```bash
-/home/eyal/system-docs/methodology/lookup-archived-doc.sh --query "..."
+./lookup-archived-doc.sh --query "..."
 ```
 
 ## Source Repo vs Project Repo
@@ -848,45 +850,45 @@ The source repo should stay strict about:
 ### Start or adopt
 
 ```bash
-/home/eyal/system-docs/methodology/init-project.sh /path/to/project
-/home/eyal/system-docs/methodology/adopt-methodology.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-entry.sh /path/to/project
+./init-project.sh /path/to/project
+./adopt-methodology.sh /path/to/project
+./methodology-entry.sh /path/to/project
 ```
 
 ### Readiness and execution
 
 ```bash
-/home/eyal/system-docs/methodology/work-preflight.sh /path/to/project
-/home/eyal/system-docs/methodology/begin-work.sh --task "Task title" --state in_progress /path/to/project
-/home/eyal/system-docs/methodology/progress-checkpoint.sh --summary "What changed" /path/to/project
-/home/eyal/system-docs/methodology/verify-project.sh /path/to/project
+./work-preflight.sh /path/to/project
+./begin-work.sh --task "Task title" --state in_progress /path/to/project
+./progress-checkpoint.sh --summary "What changed" /path/to/project
+./verify-project.sh /path/to/project
 ```
 
 ### Task lifecycle
 
 ```bash
-/home/eyal/system-docs/methodology/new-feature.sh --title "Feature title" /path/to/project
-/home/eyal/system-docs/methodology/move-task.sh --task "Feature title" --to ready /path/to/project
-/home/eyal/system-docs/methodology/finish-task.sh /path/to/project
-/home/eyal/system-docs/methodology/next-task.sh /path/to/project
+./new-feature.sh --title "Feature title" /path/to/project
+./move-task.sh --task "Feature title" --to ready /path/to/project
+./finish-task.sh /path/to/project
+./next-task.sh /path/to/project
 ```
 
 ### Multi-agent
 
 ```bash
-/home/eyal/system-docs/methodology/claim-work.sh --task "Task title" --agent "builder" --files "app/api.ts,app/ui.tsx" /path/to/project
-/home/eyal/system-docs/methodology/worker-context-pack.sh --claim-id claim-... /path/to/project
-/home/eyal/system-docs/methodology/claim-diff-check.sh /path/to/project
-/home/eyal/system-docs/methodology/agent-merge-check.sh /path/to/project
+./claim-work.sh --task "Task title" --agent "builder" --files "app/api.ts,app/ui.tsx" /path/to/project
+./worker-context-pack.sh --claim-id claim-... /path/to/project
+./claim-diff-check.sh /path/to/project
+./agent-merge-check.sh /path/to/project
 ```
 
 ### Hotfix / release / audit
 
 ```bash
-/home/eyal/system-docs/methodology/enter-hotfix.sh --summary "..." --interrupted-task "T-014" /path/to/project
-/home/eyal/system-docs/methodology/release-cut.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-audit.sh /path/to/project
-/home/eyal/system-docs/methodology/methodology-status.sh /path/to/project
+./enter-hotfix.sh --summary "..." --interrupted-task "T-014" /path/to/project
+./release-cut.sh /path/to/project
+./methodology-audit.sh /path/to/project
+./methodology-status.sh /path/to/project
 ```
 
 ## When To Improve The Methodology
