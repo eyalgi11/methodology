@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LAUNCHER="$SCRIPT_DIR/launch-playwriter-brave.sh"
+READY_SESSION="$SCRIPT_DIR/playwriter-ready-session.sh"
 LOCAL_BRIDGE="$SCRIPT_DIR/serve-local-page.sh"
 CLI_UPDATER="$SCRIPT_DIR/ensure-playwriter-cli.sh"
 PLAYWRITER_EXTENSION_ID="${PLAYWRITER_EXTENSION_ID:-jfeammnjpkecdekppnclgkkffahnhfhe}"
@@ -149,19 +149,6 @@ print(match.group(1) if match else "")
 PY
 }
 
-wait_for_browser_connection() {
-  local out=""
-  for _ in 1 2 3 4 5; do
-    if out="$(playwriter browser list 2>&1)"; then
-      printf '%s' "$out"
-      return 0
-    fi
-    sleep 1
-  done
-  printf '%s' "$out"
-  return 1
-}
-
 curl_check() {
   local url="$1"
   if [[ "$url" == https://* ]]; then
@@ -292,81 +279,25 @@ if (( smoke_test == 0 )); then
   exit "$status"
 fi
 
-launch_output=""
-if launch_output="$("$LAUNCHER" "$target" 2>&1)"; then
-  pass "Playwriter Brave profile launched"
-else
-  fail "Could not launch the dedicated Playwriter Brave profile"
-  printf '%s\n' "$launch_output" >&2
-  printf 'Summary: %d pass, %d warn, %d fail\n' "$pass_count" "$warn_count" "$fail_count"
-  exit "$status"
-fi
-
-browser_list_output="$(wait_for_browser_connection || true)"
-if grep -q 'browser:' <<<"$browser_list_output"; then
-  pass "Playwriter browser connection is available"
-else
-  fail "Playwriter did not see a connected browser after launch"
-  if [[ -n "$browser_list_output" ]]; then
-    printf '%s\n' "$browser_list_output" >&2
-  fi
-  printf 'Summary: %d pass, %d warn, %d fail\n' "$pass_count" "$warn_count" "$fail_count"
-  exit "$status"
-fi
-
-session_create_output="$(playwriter session new 2>&1 || true)"
-session_id="$(extract_session_id "$session_create_output")"
-if [[ -z "$session_id" ]]; then
-  fail "Could not create a Playwriter session for smoke navigation"
-  if [[ -n "$session_create_output" ]]; then
-    printf '%s\n' "$session_create_output" >&2
-  fi
-  printf 'Summary: %d pass, %d warn, %d fail\n' "$pass_count" "$warn_count" "$fail_count"
-  exit "$status"
-fi
-
-session_reset_output=""
-if session_reset_output="$(playwriter session reset "$session_id" 2>&1)"; then
-  pass "Playwriter session reset succeeded before smoke navigation"
-else
-  warn "Playwriter session reset did not succeed cleanly before smoke navigation"
-  if [[ -n "$session_reset_output" ]]; then
-    printf '%s\n' "$session_reset_output" >&2
-  fi
-fi
-
-target_js="$(json_quote "$navigate_url")"
-smoke_output=""
-if smoke_output="$(playwriter -s "$session_id" --timeout "$PLAYWRITER_SELF_CHECK_TIMEOUT_MS" -e "$(cat <<EOF
-const targetUrl = $target_js;
-let page = context.pages().find((candidate) => candidate.url() === targetUrl) ?? context.pages()[0] ?? null;
-if (!page) {
-  page = await context.newPage();
-}
-if (page.url() !== targetUrl && targetUrl !== "about:blank") {
-  await page.goto(targetUrl, { waitUntil: "domcontentloaded", timeout: 15000 });
-}
-await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(() => {});
-let title = "";
-for (let attempt = 1; attempt <= 2; attempt += 1) {
-  try {
-    title = await page.title();
-    break;
-  } catch (error) {
-    if (attempt === 2) {
-      throw error;
-    }
-    await page.waitForTimeout(500);
-  }
-}
-console.log(JSON.stringify({ url: page.url(), title }));
-EOF
-)" 2>&1)"; then
-  smoke_summary="$(printf '%s\n' "$smoke_output" | tail -n 1)"
+ready_session_json="$("$READY_SESSION" --json "$target" 2>&1 || true)"
+if grep -q '"ok":true' <<<"$ready_session_json"; then
+  session_id="$(python3 - "$ready_session_json" <<'PY'
+import json, sys
+print(json.loads(sys.argv[1]).get("session_id", ""))
+PY
+)"
+  smoke_summary="$(python3 - "$ready_session_json" <<'PY'
+import json, sys
+data = json.loads(sys.argv[1])
+text = data.get("smoke_output", "").strip().splitlines()
+print(text[-1] if text else "")
+PY
+)"
+  pass "Playwriter ready-session bootstrap succeeded"
   pass "Smoke navigation succeeded ($smoke_summary)"
 else
-  fail "Smoke navigation failed for $navigate_url"
-  printf '%s\n' "$smoke_output" >&2
+  fail "Ready-session bootstrap failed"
+  printf '%s\n' "$ready_session_json" >&2
 fi
 
 printf 'Summary: %d pass, %d warn, %d fail\n' "$pass_count" "$warn_count" "$fail_count"

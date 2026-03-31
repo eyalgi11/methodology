@@ -482,13 +482,14 @@ Important script:
 ### Web UI
 
 Browser automation is first-class for web behavior changes.
-When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `./launch-playwriter-brave.sh` or a stable project-root wrapper in `scripts/`.
-Treat Playwriter extension installation or enablement in that profile as a one-time bootstrap step, not as a repeated manual step during normal verification.
-The methodology should keep the Playwriter CLI updated automatically through `./ensure-playwriter-cli.sh`, and the launcher should run that updater before Playwriter-based browser automation by default.
-The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
-That Playwriter Brave launch path is also allowed to ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
+When browser automation uses `playwriter` autonomously, prefer `./playwriter-ready-session.sh` or a stable project-root wrapper in `scripts/` that uses the same pattern.
+That path launches a dedicated automation profile, auto-loads the bundled Playwriter extension when available, and establishes a usable session immediately instead of depending on an idle visible-profile extension connection.
+Use `./launch-playwriter-brave.sh` as the manual bring-up/debug helper when you intentionally want to inspect the browser process or reuse a visible profile.
+Treat Playwriter extension installation or enablement in a visible manual profile as a one-time bootstrap step, not as a repeated manual step during normal verification.
+The methodology should keep the Playwriter CLI updated automatically through `./ensure-playwriter-cli.sh`, and the ready-session/bootstrap path should run that updater before Playwriter-based browser automation by default.
+That Playwriter automation path is also allowed to ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
 When the browser target is a local HTML file, report, or generated page, use `./serve-local-page.sh` so browser automation works through localhost instead of raw `file://` navigation. The helper defaults to HTTPS, and the Playwriter launcher may use localhost HTTP fallback when the current browser-automation environment still rejects the local HTTPS certificate.
-When the Playwriter self-launch path is uncertain, run `./playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, browser connection, and smoke navigation.
+When the Playwriter self-launch path is uncertain, run `./playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, ready-session bootstrap, and smoke navigation.
 
 ### Methodology Source Work
 

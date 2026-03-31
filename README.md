@@ -211,9 +211,10 @@ Template-only:
 - `worker-context-pack.sh`: builds a compact worker-specific resume bundle from a claim record and task-local state
 - `agent-merge-check.sh`: validates whether claimed work is actually ready to merge or hand off
 - `render-methodology-audit.sh`: generates a static HTML audit dashboard with user and agent views from real repo state; by default it writes to `methodology/methodology-audit.html` in a project repo and `methodology-audit.html` in the methodology source repo itself
-- `launch-playwriter-brave.sh`: launches a real Brave profile for Playwriter-based browser automation so normal browser verification can reuse the installed extension instead of depending on an isolated browser data directory
+- `launch-playwriter-brave.sh`: launches Brave for Playwriter-based browser automation; useful for manual bring-up and browser debugging
+- `playwriter-ready-session.sh`: launches a dedicated Playwriter automation browser/profile and immediately establishes a usable Playwriter session for autonomous browser work
 - `ensure-playwriter-cli.sh`: keeps the Playwriter CLI installed and periodically updated to the latest npm version for methodology-managed browser automation
-- `playwriter-self-check.sh`: validates the full Playwriter self-launch path, including the Brave launcher, extension detection, localhost bridge, and an optional real smoke navigation
+- `playwriter-self-check.sh`: validates the autonomous Playwriter path using the same ready-session flow the methodology should rely on
 - `serve-local-page.sh`: converts a local file path into a localhost URL and starts or reuses the local file server needed for browser automation tools that cannot navigate raw `file://` URLs; it defaults to HTTPS and also supports HTTP fallback
 - Normal methodology refresh flows now update the audit page automatically through `refresh-methodology-state.sh`, so `methodology/methodology-audit.html` stays current without a separate manual command in most projects
 - `work-preflight.sh`: runs entry plus readiness/compliance/mode checks and prints one short remediation list

@@ -106,8 +106,9 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `incident-open.sh` | script | `manual` | Explicit incident open flow. |
 | `install-methodology-hooks.sh` | script | `manual` | Opt-in git hooks. |
 | `install-toolkit.sh` | script | `manual` | Registers the cloned methodology repo as the local toolkit install for Linux/WSL and writes `METHODOLOGY_HOME` config plus a small wrapper. |
-| `launch-playwriter-brave.sh` | script | `manual` | Launches a real Brave profile for Playwriter-based browser automation, prefers a visible profile with the installed Playwriter extension, and converts local file targets into localhost browser URLs automatically. |
+| `launch-playwriter-brave.sh` | script | `manual` | Launches Brave for Playwriter-based browser automation; useful for manual bring-up and browser debugging, and supports dedicated automation profiles plus local-file URL bridging. |
 | `methodology-registry-check.sh` | script | `manual` | Verifies registry coverage and state validity in the methodology source repo. |
+| `playwriter-ready-session.sh` | script | `manual` | Launches a dedicated Playwriter automation browser/profile, creates a real usable session immediately, and optionally bridges local file targets to localhost URLs. |
 | `playwriter-self-check.sh` | script | `manual` | Validates the full Playwriter self-launch path, including Brave availability, extension detection, local-file bridge reachability, browser connection, and optional smoke navigation. |
 | `serve-local-page.sh` | script | `manual` | Converts local files into localhost browser URLs for browser automation tools that cannot use raw `file://` navigation; defaults to HTTPS and supports HTTP fallback. |
 | `milestone-update.sh` | script | `manual` | Explicit milestone refresh. |
