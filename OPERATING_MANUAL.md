@@ -4,6 +4,10 @@ This manual explains what the methodology is, how it is meant to be used in prac
 
 Use this document when you want one end-to-end explanation instead of jumping between the README, templates, and helper scripts.
 
+Source repo boundary note:
+- `/home/eyal/system-docs/methodology` is the methodology source git repo.
+- `/home/eyal/system-docs` may contain unrelated system-doc files and should not be treated as the methodology source boundary.
+
 ## What This Methodology Is
 
 This methodology is a project operating system for Codex-style software work.
@@ -468,7 +472,7 @@ When the Playwriter self-launch path is uncertain, run `/home/eyal/system-docs/m
 ### Methodology Source Work
 
 When changing the methodology source repo itself, use `/home/eyal/system-docs/methodology/methodology-source-work.sh start` before substantial work and `/home/eyal/system-docs/methodology/methodology-source-work.sh finish` afterward.
-When the methodology-source change is actually done and ready to close out, use `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` so only the methodology subtree is staged and committed.
+When the methodology-source change is actually done and ready to close out, use `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` so the standalone methodology source repo is refreshed, staged, and committed directly.
 
 That wrapper keeps the control-surface docs visible in the checkpoint and makes the proof model explicit:
 - source repo proves toolkit correctness

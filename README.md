@@ -2,6 +2,10 @@
 
 Startup-style operating templates for new software projects under `/home/eyal`.
 
+Repo boundary note:
+- `/home/eyal/system-docs/methodology` is its own git repo now.
+- `/home/eyal/system-docs` may still contain unrelated system-doc files, but methodology-source work should use git from the `methodology/` directory itself.
+
 If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:
 - [METHODOLOGY_PRINCIPLES.md](/home/eyal/system-docs/methodology/METHODOLOGY_PRINCIPLES.md)
 - [DEFAULT_BEHAVIOR.md](/home/eyal/system-docs/methodology/DEFAULT_BEHAVIOR.md)
@@ -199,7 +203,7 @@ Template-only:
 - `new-experiment.sh`: creates a bounded experiment entry in `EXPERIMENTS.md`
 - `close-work.sh`: closes a task across tasks, handoff, session, health, and release notes
 - `finish-task.sh`: finishes a truly-done task through verification, closure, and a local git commit when there are changes
-- `methodology-source-work.sh`: lightweight start/finish/commit wrapper for using the methodology on its own source repo with control-surface docs, preflight, audit refresh, registry proof, and methodology-only local commits
+- `methodology-source-work.sh`: lightweight start/finish/commit wrapper for using the methodology on its own source repo with control-surface docs, preflight, audit refresh, registry proof, and local commits in the standalone methodology source repo
 - `sync-docs.sh`: refreshes cross-document auto summaries
 - `scaffold-stack.sh`: creates a starter app for a supported stack, then initializes methodology
 - `milestone-update.sh`: refreshes milestone confidence and delivery health

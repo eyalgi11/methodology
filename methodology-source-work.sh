@@ -21,7 +21,7 @@ finish:
 
 commit:
   - runs the finish flow
-  - stages only the methodology source subtree
+  - stages the methodology source repo
   - creates a local commit for methodology-source changes only
 
 Options for commit:
