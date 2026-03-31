@@ -25,7 +25,13 @@ From the cloned methodology repo root:
 That will:
 - write `METHODOLOGY_HOME` to `~/.config/methodology/config.env`
 - install a small `mtool` wrapper into `~/.local/bin`
-- optionally add the config source line to `~/.bashrc` or `~/.zshrc`
+- optionally add shared methodology shell snippets to `~/.bashrc` and `~/.zshrc`
+
+That shell setup enables portable helpers in both bash and zsh:
+- `mstart`
+- `mresume`
+- `mupdate`
+- `madopt`
 
 After that, these are equivalent:
 
@@ -36,6 +42,15 @@ mtool methodology-entry.sh /path/to/project
 
 Use `./script.sh` when you are already in the methodology repo root.
 Use `mtool script.sh` when you are somewhere else on the machine.
+
+After reloading your shell rc files, the shared shell helpers should work in either shell:
+
+```bash
+mstart
+mresume
+mupdate
+madopt
+```
 
 ## Project Bootstrap Behavior
 

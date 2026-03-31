@@ -89,6 +89,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | --- | --- | --- | --- |
 | `OPERATING_MANUAL.md` | doc | `manual` | Full end-to-end explanation of the methodology lifecycle, files, and scripts. |
 | `README.md` | doc | `manual` | Human-facing overview of the methodology source. |
+| `shell-methodology.sh` | script | `manual` | Shared bash/zsh shell helpers for `mstart`, `mresume`, `mupdate`, and `madopt`, while preserving shell-local behavior like `cd`. |
 | `METHODOLOGY_REGISTRY.md` | doc | `manual` | Human-facing source-of-truth for toolkit artifact states. |
 | `METHODOLOGY_PRINCIPLES.md` | doc | `manual` | Shortest statement of what the methodology is for and what it must not do. |
 | `DEFAULT_BEHAVIOR.md` | doc | `manual` | Short default-path explanation of what the methodology usually does. |

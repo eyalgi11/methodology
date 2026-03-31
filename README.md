@@ -15,7 +15,7 @@ cd /path/to/cloned/methodology
 ./install-toolkit.sh
 ```
 
-That writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`, installs a small `mtool` wrapper in `~/.local/bin`, and lets project bootstraps record the correct toolkit path in `methodology/toolkit-path.txt`.
+That writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`, installs a small `mtool` wrapper in `~/.local/bin`, enables shared shell helpers for both bash and zsh, and lets project bootstraps record the correct toolkit path in `methodology/toolkit-path.txt`.
 
 Portable runtime rules:
 - project bootstraps write `methodology/toolkit-path.txt` automatically
@@ -23,6 +23,7 @@ Portable runtime rules:
 - `./portability-check.sh` is the source-repo guard against machine-specific runtime paths
 - from the methodology repo root, examples in this README use `./script.sh`
 - from elsewhere on the same machine after install, use `mtool script.sh`
+- after reloading bash or zsh rc files, shared helpers like `mstart`, `mresume`, `mupdate`, and `madopt` are available in both shells
 - normal methodology use should run as the regular project user, not from a long-lived sudo/root shell
 
 If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:

@@ -9,6 +9,7 @@ Source repo boundary note:
 - the parent directory may contain unrelated files and should not be treated as the methodology source boundary
 - commands below assume you are running them from the methodology repo root with `./script.sh`
 - after `./install-toolkit.sh`, you can run the same helpers from elsewhere with `mtool script.sh`
+- after reloading bash or zsh rc files, shared helpers like `mstart`, `mresume`, `mupdate`, and `madopt` are available in either shell
 
 ## Installing The Toolkit On Linux Or WSL
 
@@ -22,6 +23,7 @@ cd /path/to/cloned/methodology
 That does three things:
 - writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`
 - installs a small `mtool` wrapper in `~/.local/bin`
+- enables shared bash/zsh methodology helpers through shell rc snippets
 - makes project bootstraps record the cloned toolkit path in `methodology/toolkit-path.txt`
 
 Portable project behavior then works like this:
