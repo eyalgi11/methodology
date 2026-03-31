@@ -26,6 +26,7 @@ That will:
 - write `METHODOLOGY_HOME` to `~/.config/methodology/config.env`
 - install a small `mtool` wrapper into `~/.local/bin`
 - optionally add shared methodology shell snippets to `~/.bashrc` and `~/.zshrc`
+- remove the older inline zsh-only methodology helper block during upgrades when it is present
 
 That shell setup enables portable helpers in both bash and zsh:
 - `mstart`

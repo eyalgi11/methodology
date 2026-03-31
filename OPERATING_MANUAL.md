@@ -24,6 +24,7 @@ That does three things:
 - writes `METHODOLOGY_HOME` config under `~/.config/methodology/config.env`
 - installs a small `mtool` wrapper in `~/.local/bin`
 - enables shared bash/zsh methodology helpers through shell rc snippets
+- removes the older inline zsh-only methodology helper block during upgrades when it is present
 - makes project bootstraps record the cloned toolkit path in `methodology/toolkit-path.txt`
 
 Portable project behavior then works like this:

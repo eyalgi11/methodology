@@ -30,12 +30,40 @@ resolve_target_user() {
 
 resolve_user_home() {
   local user="$1"
+  if [[ -n "${METHODOLOGY_INSTALL_HOME:-}" ]]; then
+    printf '%s' "$METHODOLOGY_INSTALL_HOME"
+    return 0
+  fi
   local home_dir
   home_dir="$(getent passwd "$user" | cut -d: -f6)"
   if [[ -n "$home_dir" ]]; then
     printf '%s' "$home_dir"
   else
     printf '%s' "$HOME"
+  fi
+}
+
+remove_legacy_shell_helpers() {
+  local rc_file="$1"
+  local config_snippet="$2"
+  local tmp_file
+
+  [[ -f "$rc_file" ]] || return 0
+  grep -Fqx "# Methodology project entry helpers" "$rc_file" 2>/dev/null || return 0
+  grep -Fqx "$config_snippet" "$rc_file" 2>/dev/null || return 0
+
+  tmp_file="$(mktemp)"
+  awk '
+    BEGIN { skip = 0 }
+    /^# Methodology project entry helpers$/ { skip = 1; next }
+    skip && /^\[ -f "\$\{XDG_CONFIG_HOME:-\$HOME\/\.config\}\/methodology\/config\.env" \] && source "\$\{XDG_CONFIG_HOME:-\$HOME\/\.config\}\/methodology\/config\.env"$/ { skip = 0 }
+    !skip { print }
+  ' "$rc_file" > "$tmp_file"
+
+  if ! cmp -s "$rc_file" "$tmp_file"; then
+    mv "$tmp_file" "$rc_file"
+  else
+    rm -f "$tmp_file"
   fi
 }
 
@@ -49,6 +77,7 @@ What it does:
   - writes METHODOLOGY_HOME to ${CONFIG_FILE}
   - installs a small \`mtool\` wrapper into ${LOCAL_BIN_DIR}
   - optionally appends shared shell snippets to ~/.bashrc and ~/.zshrc
+  - removes older inline methodology helper blocks from prior zsh-only setup
   - enables portable shell helpers like \`mstart\`, \`mresume\`, \`mupdate\`, and \`madopt\`
 
 This is intended for Linux and WSL environments.
@@ -128,6 +157,7 @@ if (( update_shell_rc )); then
   config_snippet='[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/methodology/config.env" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/methodology/config.env"'
   shell_snippet='[ -n "${METHODOLOGY_HOME:-}" ] && [ -f "$METHODOLOGY_HOME/shell-methodology.sh" ] && source "$METHODOLOGY_HOME/shell-methodology.sh"'
   for rc_file in "${rc_files[@]}"; do
+    remove_legacy_shell_helpers "$rc_file" "$config_snippet"
     if [[ ! -f "$rc_file" ]] || ! grep -Fqx "$config_snippet" "$rc_file" 2>/dev/null; then
       printf '\n%s\n' "$config_snippet" >> "$rc_file"
     fi
