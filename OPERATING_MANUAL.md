@@ -491,6 +491,17 @@ That Playwriter automation path is also allowed to ignore localhost certificate 
 When the browser target is a local HTML file, report, or generated page, use `./serve-local-page.sh` so browser automation works through localhost instead of raw `file://` navigation. The helper defaults to HTTPS, and the Playwriter launcher may use localhost HTTP fallback when the current browser-automation environment still rejects the local HTTPS certificate.
 When the Playwriter self-launch path is uncertain, run `./playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, ready-session bootstrap, and smoke navigation.
 
+## User Context
+
+Run the methodology as the normal project user by default.
+
+Use `sudo` or a root shell only when the work is genuinely system-level, such as:
+- package installation or machine administration
+- fixing ownership or permission damage from earlier root work
+- other host-level operations outside the normal project workflow
+
+Do not normalize “always work as root” into the methodology. The steady-state path should keep project files, generated outputs, browser profiles, and runtime state owned by the regular project user.
+
 ### Methodology Source Work
 
 When changing the methodology source repo itself, use `./methodology-source-work.sh start` before substantial work and `./methodology-source-work.sh finish` afterward.

@@ -23,6 +23,7 @@ Portable runtime rules:
 - `./portability-check.sh` is the source-repo guard against machine-specific runtime paths
 - from the methodology repo root, examples in this README use `./script.sh`
 - from elsewhere on the same machine after install, use `mtool script.sh`
+- normal methodology use should run as the regular project user, not from a long-lived sudo/root shell
 
 If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:
 - [METHODOLOGY_PRINCIPLES.md](./METHODOLOGY_PRINCIPLES.md)
@@ -47,6 +48,7 @@ For one end-to-end explanation of what the methodology does, how the main files 
   - `deprecated`: avoid for new work
 - `template-only`: source template that becomes live only after it is copied into a project
 - Validate registry coverage with `./methodology-registry-check.sh`.
+- Treat sudo/root execution as an exception path for system-level setup or ownership repair, not as the normal methodology operating mode.
 
 ## Read This First
 

@@ -14,6 +14,7 @@ For substantial work in a methodology-managed repo:
 5. read `TASKS.md`, `SESSION_STATE.md`, and `HANDOFF.md`
 6. identify the active task, workspace, spec path, and verification path
 7. run `work-preflight.sh` when a short readiness/remediation summary is useful
+8. stay in the normal project-user shell unless the work is genuinely system-level or needs ownership repair
 
 ## During Work
 

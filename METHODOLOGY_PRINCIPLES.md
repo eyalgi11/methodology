@@ -27,6 +27,7 @@ It should feel like a small operating system for software work, not a pile of te
 - Do not hide uncertainty about what was actually tested, verified, or assumed.
 - Do not call work fixed, done, or stable more strongly than the current verification really supports.
 - Do not leave the project in a root-owned or hard-to-edit state.
+- Do not normalize long-lived sudo/root shells into the standard methodology workflow.
 
 ## What The Methodology Must Always Do
 

@@ -83,6 +83,7 @@ This repository is methodology-managed.
   - the shared risk class (`R0` / `R1` / `R2` / `R3`)
   - for production-impacting work, the release risk
 - If changed files touch web UI behavior, the verification path must include the intended browser automation flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
+- Run the methodology as the normal project user by default. Do not make a sudo/root shell the standard project workflow; reserve it for system-level tasks, package/admin work, or ownership repair.
 - When browser automation uses `playwriter` autonomously, prefer `__METHODOLOGY_HOME__/playwriter-ready-session.sh` or a project-root wrapper script under `scripts/` that uses the same pattern. That path should launch a dedicated automation browser/profile and establish a usable session immediately instead of relying on an idle visible-profile extension connection.
 - Use `__METHODOLOGY_HOME__/launch-playwriter-brave.sh` as the manual bring-up/debug helper when a visible Brave profile is intentionally needed.
 - The methodology should keep the Playwriter CLI updated automatically through `__METHODOLOGY_HOME__/ensure-playwriter-cli.sh`, and the ready-session/bootstrap path should run that updater before browser automation by default.
