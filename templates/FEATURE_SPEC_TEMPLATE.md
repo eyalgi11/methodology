@@ -9,9 +9,12 @@
 ## Design Basis
 - Stitch required for this work? yes / no
 - Stitch prompt or design direction:
+- Stitch mode / model: if using the web UI directly, prefer `Thinking with 3.1 Pro` / Gemini 3.1 Pro when available; for Stitch MCP, note the default supported model or any verified `modelId` override
 - Stitch screen or project reference:
 - Existing design system or product constraints to preserve:
 - Intentional deviations from the Stitch-generated design:
+- `frontend-design` used for implementation/polish? yes / no
+- `frontend-design` implementation notes or aesthetic deviations:
 
 ## User Story
 - As a ...

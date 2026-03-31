@@ -1014,10 +1014,17 @@ read_maturity_mode() {
 read_work_type() {
   local target_dir="$1"
   local work_type
+  local mode
   work_type="$(project_brief_heading_value "$target_dir" "## Work Type")"
   work_type="$(trim_whitespace "$work_type")"
   work_type="${work_type//\`/}"
   if [[ -z "$work_type" ]] || is_placeholder_value "$work_type"; then
+    mode="$(read_maturity_mode "$target_dir")"
+    mode="$(trim_whitespace "$mode")"
+    if [[ "$mode" == "template_source" ]]; then
+      printf 'template_source'
+      return 0
+    fi
     printf 'product'
     return 0
   fi

@@ -90,19 +90,30 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `OPERATING_MANUAL.md` | doc | `manual` | Full end-to-end explanation of the methodology lifecycle, files, and scripts. |
 | `README.md` | doc | `manual` | Human-facing overview of the methodology source. |
 | `METHODOLOGY_REGISTRY.md` | doc | `manual` | Human-facing source-of-truth for toolkit artifact states. |
+| `METHODOLOGY_PRINCIPLES.md` | doc | `manual` | Shortest statement of what the methodology is for and what it must not do. |
+| `DEFAULT_BEHAVIOR.md` | doc | `manual` | Short default-path explanation of what the methodology usually does. |
+| `METHODOLOGY_LAYERS.md` | doc | `manual` | Compact map of what is core, optional, advanced, and compatibility-only. |
+| `METHODOLOGY_CONTROL_LOOP.md` | doc | `manual` | Compact rule for how the methodology should keep itself aligned with user intent. |
+| `reference/USER_FACING_FILES.md` | doc | `manual` | Compact reference for which methodology files are primarily user-facing versus internal. |
 | `archive-methodology.sh` | script | `manual` | Explicit methodology archive/cleanup operation. |
 | `ci-methodology-check.sh` | script | `manual` | CI-oriented methodology validation entrypoint. |
+| `ensure-playwriter-cli.sh` | script | `manual` | Ensures the Playwriter CLI is installed and periodically updates it to the latest npm version before browser-automation workflows. |
 | `finish-work.sh` | script | `manual` | Optional end-of-work wrapper. |
 | `finish-task.sh` | script | `manual` | Preferred explicit “task is really done” flow with local commit when changed. |
+| `methodology-source-work.sh` | script | `manual` | Lightweight start/finish/commit wrapper for using the methodology on its own source repo with control-surface docs, preflight, audit refresh, registry proof, and methodology-only local commits. |
 | `incident-close.sh` | script | `manual` | Explicit incident close flow. |
 | `incident-open.sh` | script | `manual` | Explicit incident open flow. |
 | `install-methodology-hooks.sh` | script | `manual` | Opt-in git hooks. |
+| `launch-playwriter-brave.sh` | script | `manual` | Launches a real Brave profile for Playwriter-based browser automation, prefers a visible profile with the installed Playwriter extension, and converts local file targets into localhost browser URLs automatically. |
 | `methodology-registry-check.sh` | script | `manual` | Verifies registry coverage and state validity in the methodology source repo. |
+| `playwriter-self-check.sh` | script | `manual` | Validates the full Playwriter self-launch path, including Brave availability, extension detection, local-file bridge reachability, browser connection, and optional smoke navigation. |
+| `serve-local-page.sh` | script | `manual` | Converts local files into localhost browser URLs for browser automation tools that cannot use raw `file://` navigation; defaults to HTTPS and supports HTTP fallback. |
 | `milestone-update.sh` | script | `manual` | Explicit milestone refresh. |
 | `next-task.sh` | script | `manual` | Preferred explicit “continue to the next ready task” flow with local commit when changed. |
 | `plan-task.sh` | script | `manual` | Optional task/spec planning wrapper. |
 | `project-bootstrap-profile.sh` | script | `manual` | Profile-specific bootstrap instead of the default path. |
 | `record-exception.sh` | script | `manual` | Explicit process-exception logging helper. |
+| `render-methodology-audit.sh` | script | `manual` | Generates a static HTML methodology audit dashboard from real repo state. |
 | `release-cut.sh` | script | `manual` | Explicit release-prep flow. |
 | `scaffold-stack.sh` | script | `manual` | Opinionated project scaffolding for supported stacks. |
 | `set-maturity-mode.sh` | script | `manual` | Explicit maturity-mode switch helper. |

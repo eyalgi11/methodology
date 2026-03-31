@@ -107,6 +107,10 @@ for path in sorted(target_dir.rglob("*")):
         continue
     if path.suffix not in {".sh", ".md", ".json"}:
         continue
+    if re.match(r"^work/[^/]+/(TASK\.json|STATE\.md|HANDOFF\.md|SPRINT_CONTRACT\.md)$", rel):
+        continue
+    if re.match(r"^claims/(?!README\.md$)[^/]+\.(md|json)$", rel):
+        continue
     actual_artifacts.append(rel)
 
 actual_set = set(actual_artifacts)

@@ -21,8 +21,13 @@ This repository is methodology-managed.
 - Treat non-trivial feature specs as release-aware and impact-aware.
 - Keep the feature-spec template source at `methodology/templates/FEATURE_SPEC_TEMPLATE.md`.
 - New methodology-managed feature specs should live under `methodology/features/`. Legacy root `specs/...` feature-spec links remain supported for older repos, but they are no longer the default destination for generated feature specs.
+- Feature specs are read-only by default. Do not create, edit, refresh, or backfill a feature spec unless the user explicitly asks for a spec change.
 - For non-trivial web UI, mobile UI, or other user-facing design work, use Stitch MCP to generate or refine the design basis before implementation unless the change is a trivial tweak or the existing design system already constrains the solution tightly.
-- Record the Stitch design basis in the feature spec with the prompt or direction used, the resulting screen reference, and any intentional deviations.
+- When using Stitch through the web UI directly, prefer `Thinking with 3.1 Pro` / Gemini 3.1 Pro when that mode is available. When using Stitch through MCP, prefer the default supported model unless the exact accepted `modelId` has been verified in the current environment. Use `3 Flash` only when a speed-first iteration is intentionally chosen, and use `Redesign` only when the task is specifically based on an existing screenshot or app/site redesign flow.
+- For non-trivial web UI implementation after the design basis is defined, use the `frontend-design` skill when it is available to turn that basis into a distinctive, production-quality frontend instead of settling for generic UI output.
+- Record the Stitch design basis in the feature spec with the prompt or direction used, the selected Stitch mode/model, the resulting screen reference, and any intentional deviations.
+- Record whether `frontend-design` was used for the implementation pass, and note any deliberate deviations from the design basis or aesthetic direction it introduced.
+- If implementation reveals that the spec is incomplete, stale, or wrong, do not silently edit it. Record the mismatch in `OPEN_QUESTIONS.md`, `HANDOFF.md`, or the task workspace and wait for explicit user approval before changing the spec.
 - For hypothesis-driven work, use `EXPERIMENTS.md` and `EXPERIMENT_LOG.md` as the bounded experimentation layer.
 - Do not treat experimental winners as durable product decisions until they beat baseline and are logged explicitly.
 - For experiment-driven work, do not start until hypothesis, baseline, success threshold, time-to-signal, and stop rule are explicit.
@@ -76,6 +81,12 @@ This repository is methodology-managed.
   - the shared risk class (`R0` / `R1` / `R2` / `R3`)
   - for production-impacting work, the release risk
 - If changed files touch web UI behavior, the verification path must include the intended browser automation flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
+- When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a project-root wrapper script under `scripts/`. Treat first-time extension installation or enablement as a one-time browser bootstrap, not part of every verification run.
+- The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the Playwriter launcher should run that updater before browser automation by default.
+- The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
+- The Playwriter Brave launch path may ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
+- When a browser automation target is a local HTML file or other local page, convert it to a localhost URL with `/home/eyal/system-docs/methodology/serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and the Brave Playwriter launcher may use a localhost HTTP fallback for local file targets when the current Playwriter environment cannot accept the local HTTPS certificate cleanly.
+- For non-trivial web UI implementation, prefer `frontend-design` as the frontend craft skill after the Stitch design basis exists, unless the change is trivial or the repo already has a tightly constraining design system.
 - If changed files touch mobile app/device behavior, the verification path must include the intended full native Appium flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
 - If changed files touch desktop app behavior, the verification path must include the intended Playwright/Electron or native desktop automation flow unless the skip is recorded in `PROCESS_EXCEPTIONS.md`.
 - When something is ready for manual human checking, do not leave that implicit. Say it clearly and provide short instructions for what to open, where to click, and what result to expect.
@@ -96,12 +107,20 @@ This repository is methodology-managed.
 - Core surface is the default bootstrap for prototype-style repos; use `--surface full` only when you intentionally want the full template set up front.
 - If the project already has the methodology files, preserve them and work from their current contents.
 - Treat `methodology/PROJECT_BRIEF.md`, `methodology/TASKS.md`, `methodology/SESSION_STATE.md`, and `methodology/HANDOFF.md` as the first source of truth for startup and resume behavior.
+- For changes to the methodology source repo itself, prefer `/home/eyal/system-docs/methodology/methodology-source-work.sh start` before substantial work, `/home/eyal/system-docs/methodology/methodology-source-work.sh finish` after verification, and `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` when the methodology-source change is actually ready to close out.
 - For repeated user or team workflows, prefer stable bash entrypoints under the project-root `scripts/` directory instead of leaving the command only inline in docs or chat.
 - Keep `COMMANDS.md` pointing to `scripts/*.sh` for repeated workflows; inline commands are acceptable for occasional or one-off use.
+- Use confidence language precisely:
+  - `implemented` when the change exists
+  - `verified` when the actual target path passed
+  - `stable` only when stronger repeated or cross-path verification exists
 - When a task is truly complete and accepted, prefer `/home/eyal/system-docs/methodology/finish-task.sh .` over ad hoc manual closing so verification, closure, and the local git commit stay aligned.
 - When the user explicitly wants to continue to the next task, prefer `/home/eyal/system-docs/methodology/next-task.sh .` so the next ready task, start checkpoint, and local git commit stay aligned.
 - These task-transition helpers create local commits when there are changes; they do not push automatically.
 - Treat `METRICS.md` as an operating document. Important metrics should include owner, source, cadence, baseline, threshold, and action-if-red.
+- Keep source proof and dogfood proof distinct:
+  - methodology source repo proves toolkit correctness
+  - dogfood or normal project repos prove lived workflow behavior
 - When the repo uses AI / Codex workflows meaningfully, keep `METRICS.md` and `SECURITY_NOTES.md` current with model/provider/version, eval thresholds, cost or latency budgets, allowed tools, confirmation-required tools, and fallback behavior.
 - In `production` mode, keep service ownership visible in `ARCHITECTURE.md` with engineering owner, business owner, operational owner/on-call, dashboards, alerts, runbook, rollback owner, and service tier / SLO.
 - Keep active bounded experiments visible in `EXPERIMENTS.md` and completed outcomes in `EXPERIMENT_LOG.md`.

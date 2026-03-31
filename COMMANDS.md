@@ -21,6 +21,13 @@
 - Unit tests:
 - Integration tests:
 - End-to-end tests:
+- Browser automation self-check:
+- Browser automation CLI updater:
+- Browser automation bootstrap:
+- Browser automation launcher:
+- Browser automation localhost HTTPS certificate note:
+- Local page to localhost HTTPS:
+- Local page to localhost HTTP fallback:
 - Browser automation:
 <!-- Required when changed files touch web UI behavior unless an exception is recorded in PROCESS_EXCEPTIONS.md. Canonical capability: browser automation. Accept playwriter, Playwright, or an equivalent browser automation command. -->
 - Mobile automation:

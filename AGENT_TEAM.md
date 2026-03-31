@@ -102,11 +102,12 @@
 - If a worker cannot finish safely from its current base, it must hand off instead of improvising merge policy.
 
 ## Operating Rules
-- Default to multi-agent execution for all meaningful Codex work.
+- Default to a second pair of eyes for meaningful Codex work. Use full multi-agent decomposition only when the work is parallelizable, cross-stack, risky, or time-sensitive.
 - If `Delegation policy` is `single_agent_by_platform_policy`, single-agent execution is acceptable until the user explicitly asks for delegation or sub-agents.
 - At minimum, every meaningful task should use:
   - one Lead
   - one complementary agent
+- If delegation is suspended by platform policy or the user has not authorized sub-agents in the current environment, the Lead may proceed alone without treating that as a methodology failure.
 - Use `MULTI_AGENT_PLAN.md` to map actual assignments for the current task.
 - Use `ACTIVE_CLAIMS.md` for live file and task ownership.
-- If a non-trivial task must collapse to single-agent execution, record the reason in `PROCESS_EXCEPTIONS.md`.
+- If a non-trivial task must collapse to single-agent execution outside the allowed platform-policy case, record the reason in `PROCESS_EXCEPTIONS.md`.

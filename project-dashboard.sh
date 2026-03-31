@@ -77,7 +77,7 @@ if ! "$SCRIPT_DIR/methodology-status.sh" "$target_dir" >/dev/null 2>&1; then
   status_summary="stale"
 fi
 drift_summary="ok"
-if ! "$SCRIPT_DIR/drift-check.sh" "$target_dir" >/dev/null 2>&1; then
+if [[ "${METHODOLOGY_DASHBOARD_SKIP_DRIFT:-0}" != "1" ]] && ! "$SCRIPT_DIR/drift-check.sh" "$target_dir" >/dev/null 2>&1; then
   drift_summary="issues"
 fi
 verification_entries="$(safe_grep_count '^## Verification Entry - ' "$(project_file_path "$target_dir" "VERIFICATION_LOG.md")")"

@@ -21,5 +21,5 @@ Work is done only when all applicable items below are true:
 - Customer-facing communication is prepared when the release changes user behavior, access, pricing, or migrations.
 - Support / migration notes were recorded when behavior change could affect operators, users, or data.
 - If the slice is feature-complete but not integration-hardened, an explicit stabilization follow-up task exists before the slice is treated as fully hardened.
-- Documentation or specs were updated if behavior changed.
+- Documentation was updated if behavior changed. Specs remain read-only unless the user explicitly asked for a spec change.
 - Important tradeoffs or architectural decisions were written down.

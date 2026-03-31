@@ -21,6 +21,11 @@ Use this file to define the canonical local runtime contract for the project.
 
 ## Device / UI Expectations
 - Browser expectations:
+- Browser automation profile:
+- Browser automation bootstrap notes:
+- Browser automation localhost HTTPS certificate note:
+- Local page localhost HTTPS command:
+- Local page localhost HTTP fallback command:
 - Emulator / simulator expectations:
 - Native build expectations:
 

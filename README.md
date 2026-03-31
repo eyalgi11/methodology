@@ -2,6 +2,12 @@
 
 Startup-style operating templates for new software projects under `/home/eyal`.
 
+If you want the shortest possible explanation of what this methodology is trying to do and what it will usually do, read these first:
+- [METHODOLOGY_PRINCIPLES.md](/home/eyal/system-docs/methodology/METHODOLOGY_PRINCIPLES.md)
+- [DEFAULT_BEHAVIOR.md](/home/eyal/system-docs/methodology/DEFAULT_BEHAVIOR.md)
+- [METHODOLOGY_LAYERS.md](/home/eyal/system-docs/methodology/METHODOLOGY_LAYERS.md)
+- [METHODOLOGY_CONTROL_LOOP.md](/home/eyal/system-docs/methodology/METHODOLOGY_CONTROL_LOOP.md)
+
 For one end-to-end explanation of what the methodology does, how the main files fit together, and which scripts to use in the normal lifecycle, read [OPERATING_MANUAL.md](/home/eyal/system-docs/methodology/OPERATING_MANUAL.md).
 
 ## Governance
@@ -20,6 +26,12 @@ For one end-to-end explanation of what the methodology does, how the main files 
 - Validate registry coverage with `/home/eyal/system-docs/methodology/methodology-registry-check.sh`.
 
 ## Read This First
+
+If you want to audit intent quickly:
+- `METHODOLOGY_PRINCIPLES.md` is the shortest statement of what the methodology is for
+- `DEFAULT_BEHAVIOR.md` is the normal operating path
+- `METHODOLOGY_LAYERS.md` tells you what is core versus optional
+- `METHODOLOGY_CONTROL_LOOP.md` explains how the methodology should keep itself aligned with the user's intent
 
 Do not treat this toolkit as one flat list of files and scripts.
 
@@ -175,12 +187,19 @@ Template-only:
 - `context-pack.sh`: builds a compact markdown resume bundle from the repo and key docs
 - `worker-context-pack.sh`: builds a compact worker-specific resume bundle from a claim record and task-local state
 - `agent-merge-check.sh`: validates whether claimed work is actually ready to merge or hand off
+- `render-methodology-audit.sh`: generates a static HTML audit dashboard with user and agent views from real repo state; by default it writes to `methodology/methodology-audit.html` in a project repo and `methodology-audit.html` in the methodology source repo itself
+- `launch-playwriter-brave.sh`: launches a real Brave profile for Playwriter-based browser automation so normal browser verification can reuse the installed extension instead of depending on an isolated browser data directory
+- `ensure-playwriter-cli.sh`: keeps the Playwriter CLI installed and periodically updated to the latest npm version for methodology-managed browser automation
+- `playwriter-self-check.sh`: validates the full Playwriter self-launch path, including the Brave launcher, extension detection, localhost bridge, and an optional real smoke navigation
+- `serve-local-page.sh`: converts a local file path into a localhost URL and starts or reuses the local file server needed for browser automation tools that cannot navigate raw `file://` URLs; it defaults to HTTPS and also supports HTTP fallback
+- Normal methodology refresh flows now update the audit page automatically through `refresh-methodology-state.sh`, so `methodology/methodology-audit.html` stays current without a separate manual command in most projects
 - `work-preflight.sh`: runs entry plus readiness/compliance/mode checks and prints one short remediation list
 - `drift-check.sh`: checks for contradictions, stale docs, and optional command failures
-- `new-feature.sh`: creates a feature spec under `methodology/features/` and a corresponding planned task
+- `new-feature.sh`: explicit opt-in helper that creates a feature spec under `methodology/features/` and a corresponding planned task when the user asks for a spec/task seed
 - `new-experiment.sh`: creates a bounded experiment entry in `EXPERIMENTS.md`
 - `close-work.sh`: closes a task across tasks, handoff, session, health, and release notes
 - `finish-task.sh`: finishes a truly-done task through verification, closure, and a local git commit when there are changes
+- `methodology-source-work.sh`: lightweight start/finish/commit wrapper for using the methodology on its own source repo with control-surface docs, preflight, audit refresh, registry proof, and methodology-only local commits
 - `sync-docs.sh`: refreshes cross-document auto summaries
 - `scaffold-stack.sh`: creates a starter app for a supported stack, then initializes methodology
 - `milestone-update.sh`: refreshes milestone confidence and delivery health
@@ -192,7 +211,7 @@ Template-only:
 - `resume-work.sh`: runs the standard resume sequence and writes a context pack
 - `finish-work.sh`: runs the standard end-of-work sequence
 - `ci-methodology-check.sh`: read-only methodology checks for CI
-- `plan-task.sh`: creates a feature spec plus seed questions and risks
+- `plan-task.sh`: explicit opt-in helper that creates a feature spec plus seed questions and risks when the user asks for planning/spec scaffolding
 - `auto-update-from-git.sh`: refreshes docs from branch/status/commit state
 - `project-bootstrap-profile.sh`: scaffolds a profile-specific project shape
 - `knowledge-extract.sh`: deeper repo scan that enriches methodology docs
@@ -316,7 +335,10 @@ Existing files are preserved. Missing files are created.
 - `HOTFIX.md` plus `enter-hotfix.sh` are the default runtime-stabilization path when real usage interrupts roadmap work.
 - Manual QA handoffs should use `MANUAL_CHECKS.md` plus `HANDOFF.md` and must say what changed, which files changed, what was verified, exact commands to run, and what the human should check.
 - `PROJECT_BRIEF.md` and feature specs now intentionally carry business/customer/release context so the methodology behaves more like a company operating system, not only an engineering workflow.
+- Feature specs are read-only by default. Agents should implement against them and record discovered drift separately unless the user explicitly asks for a spec change.
 - For non-trivial user-facing UI work, Stitch MCP is the default design-basis tool: generate or refine screens first, then implement against that design basis instead of inventing the visual direction ad hoc.
+- When using the Stitch web UI directly, prefer `Thinking with 3.1 Pro` / Gemini 3.1 Pro when that mode is available. For Stitch MCP, use the default supported model unless the exact accepted `modelId` has been verified in the current environment. Use `3 Flash` only for intentionally speed-first iterations, and use `Redesign` only for screenshot-driven redesign work.
+- For non-trivial web UI implementation after the design basis exists, `frontend-design` is the preferred frontend craft skill for turning that basis into polished, production-quality interface code.
 - Approval, release, and exception handling are now more independent for risky work; do not treat Lead self-approval as the default for migrations, releases, waivers, or higher-risk completion decisions.
 - `PROCESS_EXCEPTIONS.md` is operational now: use risk level, compensating control, owner, status, expiry, CI behavior, and evidence of backfill.
 - Post-launch review is now part of the normal flow through feature specs, release notes, and project health instead of being left implicit after shipping.
@@ -346,11 +368,19 @@ Existing files are preserved. Missing files are created.
 - When work runs from a sudo/root shell, use `fix-project-perms.sh` or the built-in bootstrap/scaffold hooks so project files stay editable from the normal user shell.
 - `upgrade-template-placeholders.sh` is intended for existing methodology-managed repos that still have older untouched placeholder files and is part of the `mupdate` flow.
 - For web UI projects, treat browser automation as a default verification path in `COMMANDS.md` and feature specs, and use `playwriter` when browser behavior matters unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
+- When `playwriter` is the browser automation path, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a project-root wrapper script under `scripts/`. First-time extension installation or enablement is a one-time bootstrap step; it should not be repeated as part of normal verification.
+- The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the Brave launcher should run that updater before Playwriter-based browser automation by default.
+- The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
+- When the Playwriter self-launch path is uncertain, run `/home/eyal/system-docs/methodology/playwriter-self-check.sh` so the browser, extension, localhost bridge, and smoke navigation are validated in one place before deeper debugging.
+- That Playwriter Brave launch path is allowed to ignore localhost certificate errors so HTTPS localhost pages can still be automated without weakening the user's normal browsing habits outside that launched profile.
+- When the browser automation target is a local HTML file, local report, or generated page, convert it to a localhost URL with `/home/eyal/system-docs/methodology/serve-local-page.sh` instead of relying on raw `file://` navigation. The helper defaults to HTTPS, and `launch-playwriter-brave.sh` now does that automatically for local file targets with a localhost HTTP fallback when the current Playwriter environment rejects the local HTTPS certificate.
 - For mobile app projects, treat full native Appium verification as the default verification path in `COMMANDS.md` and feature specs, and use `appium-mobile` when device behavior matters unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
 - For desktop app projects, treat desktop automation as a default verification path in `COMMANDS.md` and feature specs; use Playwright/Electron for browser-tech desktop apps and native desktop automation such as Appium Mac2 or Windows driver / WinAppDriver for native desktop apps unless the skip is documented in `PROCESS_EXCEPTIONS.md`.
 - `context-pack.sh` is useful before handoff or after conversation compaction.
 - Compaction and reset are not the same tool: use compaction for shorter continuity preservation, but prefer a fresh-agent reset plus strong handoff when long-running work starts drifting or the agent loses coherence.
 - Separate generation from evaluation when practical. The builder should not be the only agent deciding the sprint met its contract, especially for UI/design or long-running work.
+- Use confidence language precisely: `implemented` for changed work, `verified` for a passed target path, and `stable` only for stronger repeated or cross-path proof.
+- For methodology changes, keep source proof and dogfood proof distinct: source repo proves toolkit correctness, dogfood repo proves lived workflow behavior.
 - `drift-check.sh` combines structural checks with higher-level doc consistency checks.
 - `recovery-check.sh` is the deterministic recovery checklist for lost context, stale continuity, and abandoned claims.
 - `template_source` is a valid methodology mode for the methodology repo itself; it relaxes placeholder/freshness expectations while keeping tooling checks meaningful.

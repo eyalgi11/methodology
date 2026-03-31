@@ -232,4 +232,25 @@ cat > "$(project_file_path "$target_dir" "methodology-state.json")" <<EOF
 }
 EOF
 
+if [[ "$EUID" -eq 0 ]]; then
+  state_file="$(project_file_path "$target_dir" "methodology-state.json")"
+  target_user="${SUDO_USER:-}"
+  if [[ -z "$target_user" ]]; then
+    repo_owner="$(stat -c '%U' "$target_dir" 2>/dev/null || true)"
+    if [[ -n "$repo_owner" && "$repo_owner" != "root" && "$repo_owner" != "UNKNOWN" ]]; then
+      target_user="$repo_owner"
+    else
+      target_user="$(id -un)"
+    fi
+  fi
+  if id "$target_user" >/dev/null 2>&1; then
+    target_group="$(id -gn "$target_user")"
+    chown "$target_user:$target_group" "$state_file" 2>/dev/null || true
+  fi
+fi
+
+if [[ "${METHODOLOGY_SKIP_AUDIT_RENDER:-0}" != "1" && -x "$SCRIPT_DIR/render-methodology-audit.sh" ]]; then
+  "$SCRIPT_DIR/render-methodology-audit.sh" "$target_dir" >/dev/null 2>&1 || true
+fi
+
 echo "Refreshed methodology-state.json for $target_dir"

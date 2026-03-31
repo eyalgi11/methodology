@@ -1,0 +1,18 @@
+{
+  "generator_version": "methodology-toolkit-2026-03-26.1",
+  "handoff_path": "work/define-initial-project-brief-and-first-task/HANDOFF.md",
+  "next_step": "Continue active implementation.",
+  "release_risk": "n/a",
+  "resume_here": "Resume active implementation from the task handoff.",
+  "risk_class": "n/a",
+  "schema_version": "2026-03-26.1",
+  "spec": "n/a",
+  "state": "setup",
+  "state_path": "work/define-initial-project-brief-and-first-task/STATE.md",
+  "summary": "Work started.",
+  "task": "Define initial project brief and first task",
+  "task_slug": "define-initial-project-brief-and-first-task",
+  "updated_at": "2026-03-31 06:13:36",
+  "verification_path": "Run the relevant script checks, rerender methodology-audit.html, and confirm registry/doc updates.",
+  "work_type": "template_source"
+}

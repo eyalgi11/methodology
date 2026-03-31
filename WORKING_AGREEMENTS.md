@@ -38,7 +38,7 @@
 - Do not leave important lessons trapped only in chat, handoff notes, or incident logs.
 
 ## Parallel Agent Coordination
-- Default to multi-agent execution for all meaningful Codex work.
+- Default to a second pair of eyes for meaningful Codex work. Use full multi-agent decomposition only when the work is parallelizable, cross-stack, risky, or time-sensitive.
 - Use `AGENT_TEAM.md` as the stable role model and `MULTI_AGENT_PLAN.md` to define the active lead ownership, worker slices, and merge order before substantial parallel work.
 - When more than one agent is active, claim work in `ACTIVE_CLAIMS.md` before substantial edits.
 - Keep file ownership disjoint whenever possible.

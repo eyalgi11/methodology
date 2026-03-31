@@ -90,7 +90,7 @@ The normal project lifecycle looks like this:
 3. Enter through the methodology startup flow.
 4. Identify the active task and active task workspace.
 5. Run a preflight before substantial implementation.
-6. Create or refresh the feature spec for non-trivial work.
+6. Read the linked feature spec for non-trivial work and treat it as read-only unless the user explicitly asks for a spec change.
 7. Create or refresh a sprint contract for the current implementation slice.
 8. Implement, verify, checkpoint, and keep state visible.
 9. Finish the task when it is truly done.
@@ -393,6 +393,14 @@ The spec should cover, as appropriate:
 - acceptance criteria
 - verification plan
 
+For non-trivial user-facing UI work, the intended flow is:
+- use Stitch MCP first to establish or refine the design basis
+- when using the Stitch web UI directly, prefer Stitch `Thinking with 3.1 Pro` / Gemini 3.1 Pro when that mode is available
+- when using Stitch MCP, prefer the default supported model unless the exact accepted `modelId` has been verified in the current environment
+- use Stitch `3 Flash` only for explicitly speed-first iterations and `Redesign` only for screenshot-based redesign flows
+- then use `frontend-design` for the frontend implementation and polish pass when that skill is available
+- record both the design-basis origin and any meaningful implementation/aesthetic deviations in the spec
+
 Feature specs are created by:
 - `new-feature.sh`
 
@@ -449,6 +457,22 @@ Important script:
 ### Web UI
 
 Browser automation is first-class for web behavior changes.
+When browser automation uses `playwriter`, prefer a real visible Brave profile launched through `/home/eyal/system-docs/methodology/launch-playwriter-brave.sh` or a stable project-root wrapper in `scripts/`.
+Treat Playwriter extension installation or enablement in that profile as a one-time bootstrap step, not as a repeated manual step during normal verification.
+The methodology should keep the Playwriter CLI updated automatically through `/home/eyal/system-docs/methodology/ensure-playwriter-cli.sh`, and the launcher should run that updater before Playwriter-based browser automation by default.
+The launcher should prefer the visible Brave profile that already has the Playwriter extension installed instead of defaulting to an isolated browser data directory.
+That Playwriter Brave launch path is also allowed to ignore localhost certificate errors so HTTPS localhost pages remain automatable without mutating the user's normal browsing habits outside that launched profile.
+When the browser target is a local HTML file, report, or generated page, use `/home/eyal/system-docs/methodology/serve-local-page.sh` so browser automation works through localhost instead of raw `file://` navigation. The helper defaults to HTTPS, and the Playwriter launcher may use localhost HTTP fallback when the current browser-automation environment still rejects the local HTTPS certificate.
+When the Playwriter self-launch path is uncertain, run `/home/eyal/system-docs/methodology/playwriter-self-check.sh` first. That gives one compact check for Brave, the Playwriter CLI, extension detection, the local-file bridge, browser connection, and smoke navigation.
+
+### Methodology Source Work
+
+When changing the methodology source repo itself, use `/home/eyal/system-docs/methodology/methodology-source-work.sh start` before substantial work and `/home/eyal/system-docs/methodology/methodology-source-work.sh finish` afterward.
+When the methodology-source change is actually done and ready to close out, use `/home/eyal/system-docs/methodology/methodology-source-work.sh commit` so only the methodology subtree is staged and committed.
+
+That wrapper keeps the control-surface docs visible in the checkpoint and makes the proof model explicit:
+- source repo proves toolkit correctness
+- dogfood repo proves lived workflow behavior
 
 ### Mobile App
 
@@ -504,7 +528,7 @@ The methodology supports multi-agent work, but it should be deliberate.
 
 ### Delegation Policy
 
-The default stance is multi-agent for meaningful work.
+The default stance is a second pair of eyes for meaningful work. Use full multi-agent decomposition only when the work is parallelizable, cross-stack, risky, or time-sensitive.
 
 However:
 - if `AGENT_TEAM.md` sets `Delegation policy: single_agent_by_platform_policy`
