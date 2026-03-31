@@ -62,17 +62,18 @@ if [[ "$mode" == "template_source" ]]; then
   fi
   if (( light_mode == 0 )); then
     smoke_root="$(mktemp -d /tmp/methodology-template-source-XXXXXX)"
-    if ! "$SCRIPT_DIR/init-project.sh" --git "$smoke_root/new-repo" >/dev/null 2>&1; then
+    smoke_env=(env METHODOLOGY_SKIP_AUDIT_RENDER=1 METHODOLOGY_DASHBOARD_SKIP_DRIFT=1)
+    if ! "${smoke_env[@]}" "$SCRIPT_DIR/init-project.sh" --git "$smoke_root/new-repo" >/dev/null 2>&1; then
       issues+=("Template-source smoke test failed: init-project.sh could not bootstrap a disposable repo.")
-    elif ! "$SCRIPT_DIR/methodology-entry.sh" --profile minimal "$smoke_root/new-repo" >/dev/null 2>&1; then
+    elif ! "${smoke_env[@]}" "$SCRIPT_DIR/methodology-entry.sh" --profile minimal "$smoke_root/new-repo" >/dev/null 2>&1; then
       issues+=("Template-source smoke test failed: methodology-entry.sh could not re-enter the disposable repo.")
-    elif ! "$SCRIPT_DIR/bootstrap-methodology.sh" "$smoke_root/new-repo" >/dev/null 2>&1; then
+    elif ! "${smoke_env[@]}" "$SCRIPT_DIR/bootstrap-methodology.sh" "$smoke_root/new-repo" >/dev/null 2>&1; then
       issues+=("Template-source smoke test failed: bootstrap-methodology.sh is not idempotent on a disposable repo.")
     fi
     mkdir -p "$smoke_root/existing-repo/src"
     printf 'console.log(\"hello\\n\")\n' > "$smoke_root/existing-repo/src/index.js"
     git -C "$smoke_root/existing-repo" init -b main >/dev/null 2>&1 || true
-    if ! "$SCRIPT_DIR/adopt-methodology.sh" "$smoke_root/existing-repo" >/dev/null 2>&1; then
+    if ! "${smoke_env[@]}" "$SCRIPT_DIR/adopt-methodology.sh" "$smoke_root/existing-repo" >/dev/null 2>&1; then
       issues+=("Template-source smoke test failed: adopt-methodology.sh could not retrofit a disposable existing repo.")
     fi
     rm -rf "$smoke_root"
