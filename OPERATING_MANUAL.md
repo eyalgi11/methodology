@@ -10,6 +10,7 @@ Source repo boundary note:
 - commands below assume you are running them from the methodology repo root with `./script.sh`
 - after `./install-toolkit.sh`, you can run the same helpers from elsewhere with `mtool script.sh`
 - after reloading bash or zsh rc files, shared helpers like `mstart`, `mresume`, `mupdate`, and `madopt` are available in either shell
+- `mupdate` reports whether it changed any methodology-managed files and distinguishes structural changes from normal state-refresh paths
 
 ## Installing The Toolkit On Linux Or WSL
 

@@ -24,6 +24,7 @@ Portable runtime rules:
 - from the methodology repo root, examples in this README use `./script.sh`
 - from elsewhere on the same machine after install, use `mtool script.sh`
 - after reloading bash or zsh rc files, shared helpers like `mstart`, `mresume`, `mupdate`, and `madopt` are available in both shells
+- `mupdate` now reports whether it changed any methodology-managed files and distinguishes structural changes from normal state-refresh paths
 - installer upgrades also remove the older inline zsh-only methodology helper block when it is present, so the shared shell helper stays the single source of truth
 - normal methodology use should run as the regular project user, not from a long-lived sudo/root shell
 
