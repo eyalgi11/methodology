@@ -103,6 +103,14 @@ This repository is methodology-managed.
 - Record detailed current execution state in the active task workspace files and keep them aligned with `WORK_INDEX.md`.
 - If methodology steps are skipped, record the exception in `PROCESS_EXCEPTIONS.md`.
 - State who approved the exception and when it expires.
+- Do not say a helper "didn't return a useful summary" and then proceed without replacing it.
+- If `work-preflight.sh` is unhelpful, flaky, or environment-blocked, run the equivalent underlying checks directly and summarize them:
+  - `methodology-entry.sh`
+  - `observable-compliance-check.sh`
+  - `mode-check.sh --light`
+  - `ready-check.sh` for active non-setup tasks
+  - `metrics-check.sh --no-write` when product/prod metrics discipline applies
+- Only record a `PROCESS_EXCEPTIONS.md` entry when a real methodology step is being skipped, not when the helper wrapper is being replaced by equivalent checks.
 
 ## Startup Behavior
 - If the methodology files are missing, bootstrap them with `__METHODOLOGY_HOME__/bootstrap-methodology.sh .` before substantial planning or implementation.

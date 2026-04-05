@@ -48,11 +48,13 @@ Good methodology behavior is:
 - rendered visibly on disk
 - checked by scripts instead of memory
 - corrected by tooling when safe
+- when a helper is flaky or unhelpful, replaced with an explicit equivalent fallback instead of being silently ignored
 
 Bad methodology behavior is:
 - depending on the agent to remember hidden rituals
 - requiring the user to guess whether a rule was followed
 - silently leaving state stale until someone notices
+- dismissing a failed helper with vague language and then proceeding without showing the replacement check path
 
 ## Pause-And-Realign Triggers
 

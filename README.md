@@ -82,6 +82,7 @@ Startup and continuity:
 - `bootstrap-methodology.sh`: add missing methodology files and initialize git if missing; defaults to the lighter core surface for prototype-style repos
 - `methodology-entry.sh`: default startup/resume entry flow
 - `work-preflight.sh`: one-command startup, readiness, compliance, and mode summary before substantial implementation
+- if `work-preflight.sh` is flaky or unhelpful in the current environment, the methodology fallback is to run the equivalent underlying checks directly and summarize them explicitly rather than hand-waving past preflight
 - `resume-work.sh`: standard resume sequence
 - `refresh-methodology-state.sh`: rebuild machine-readable state
 - `refresh-core-context.sh`: rebuild the compact human startup summary

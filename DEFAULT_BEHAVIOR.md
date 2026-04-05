@@ -16,6 +16,12 @@ For substantial work in a methodology-managed repo:
 7. run `work-preflight.sh` when a short readiness/remediation summary is useful
 8. stay in the normal project-user shell unless the work is genuinely system-level or needs ownership repair
 
+If `work-preflight.sh` is flaky, unhelpful, or environment-blocked, the agent should not hand-wave past it.
+The fallback is:
+- run the equivalent underlying checks directly
+- summarize the blockers or warnings explicitly
+- record a process exception only when a real methodology step is being skipped
+
 ## During Work
 
 For meaningful work, the methodology should:
