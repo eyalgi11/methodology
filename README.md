@@ -171,6 +171,7 @@ Template-only:
 - `claims/README.md`: explains the detailed leased-claim layout under `methodology/claims/`
 - `BLOCKERS.md`: active blockers that prevent progress
 - `PROCESS_EXCEPTIONS.md`: documented methodology deviations with risk, compensating controls, approver, expiry, CI behavior, and backfill evidence
+- `METHODOLOGY_FAILURES.md`: project-local log of methodology failures, their impact on work, and the suggested improvement that should feed back into the toolkit
 - `SESSION_STATE.md`: current working state for the active agent session
 - `HANDOFF.md`: compact resume guide for the next session or agent
 - `VERIFICATION_LOG.md`: durable record of checks, tests, and gaps
@@ -238,6 +239,7 @@ Template-only:
 - `dependency-delta.sh`: finds dependencies that are not documented in `DEPENDENCIES.md`
 - `project-dashboard.sh`: prints a compact operational summary of the project
 - `install-methodology-hooks.sh`: installs warning-only git hooks for methodology drift
+- `record-methodology-failure.sh`: explicit methodology-failure logging helper with suggested-improvement capture
 - `resume-work.sh`: runs the standard resume sequence and writes a context pack
 - `finish-work.sh`: runs the standard end-of-work sequence
 - `ci-methodology-check.sh`: read-only methodology checks for CI

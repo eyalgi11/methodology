@@ -104,6 +104,8 @@ This repository is methodology-managed.
 - If methodology steps are skipped, record the exception in `PROCESS_EXCEPTIONS.md`.
 - State who approved the exception and when it expires.
 - Do not say a helper "didn't return a useful summary" and then proceed without replacing it.
+- Record every methodology failure in `METHODOLOGY_FAILURES.md`, including the suggested improvement that would have prevented or reduced the failure.
+- Treat methodology failures as feedback to the toolkit, not just local project friction. If the failure is real, recurring, or likely to affect other repos, log a clear suggested source-repo follow-up.
 - If `work-preflight.sh` is unhelpful, flaky, or environment-blocked, run the equivalent underlying checks directly and summarize them:
   - `methodology-entry.sh`
   - `observable-compliance-check.sh`

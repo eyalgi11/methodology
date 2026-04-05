@@ -107,6 +107,11 @@ The normal audit loop should be:
 
 If the dashboard shows behavior the control surface would not predict, fix the methodology before adding more of it.
 
+If the methodology causes recurring friction in real project work:
+- record the failure in `METHODOLOGY_FAILURES.md`
+- include the suggested improvement explicitly
+- prefer one visible logged failure plus one clear improvement over vague complaints in handoff prose
+
 ## Confidence Language Rule
 
 When summarizing progress:

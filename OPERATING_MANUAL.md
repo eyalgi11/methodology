@@ -711,6 +711,8 @@ This should stay consistent across:
 
 `PROCESS_EXCEPTIONS.md` is where methodology deviations are made explicit.
 
+`METHODOLOGY_FAILURES.md` is where methodology failures are recorded when the methodology itself causes friction, confusion, false blockers, stale state, or other avoidable process pain. Every entry should include the suggested improvement that would have prevented or reduced the failure, so project experience feeds back into the toolkit instead of disappearing into chat.
+
 It should include:
 - reason
 - risk level

@@ -97,6 +97,11 @@ The methodology should stop and ask before:
 - risky approvals that are not clear from repo state
 - actions that would create hidden product or operational consequences
 
+When the methodology itself fails during normal work:
+- record it in `METHODOLOGY_FAILURES.md`
+- include the impact on work and the suggested improvement
+- use `record-methodology-failure.sh` when you want a fast, structured log entry
+
 ## What Should Stay Optional
 
 The methodology should not force advanced layers by default.

@@ -118,6 +118,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `project-bootstrap-profile.sh` | script | `manual` | Profile-specific bootstrap instead of the default path. |
 | `portability-check.sh` | script | `manual` | Flags machine-specific runtime paths in shell scripts so the toolkit stays portable across Linux/WSL installs. |
 | `record-exception.sh` | script | `manual` | Explicit process-exception logging helper. |
+| `record-methodology-failure.sh` | script | `manual` | Explicit methodology-failure logging helper with suggested-improvement capture. |
 | `render-methodology-audit.sh` | script | `manual` | Generates a static HTML methodology audit dashboard from real repo state. |
 | `release-cut.sh` | script | `manual` | Explicit release-prep flow. |
 | `scaffold-stack.sh` | script | `manual` | Opinionated project scaffolding for supported stacks. |
@@ -165,6 +166,7 @@ The goal is to make artifact state explicit instead of guessing from docs, chat,
 | `LOCAL_ENV.md` | template | `template-only` | Copied into projects as the runtime contract. |
 | `MANUAL_CHECKS.md` | template | `template-only` | Copied into projects for human QA handoff steps. |
 | `METHODOLOGY_EVOLUTION.md` | template | `template-only` | Copied into projects as the meta-improvement loop. |
+| `METHODOLOGY_FAILURES.md` | template | `template-only` | Copied into projects as the methodology failure log and suggested-improvement surface. |
 | `METHODOLOGY_MODE.md` | template | `template-only` | Copied into projects for rigor mode selection. |
 | `METHODOLOGY_SCORE.md` | template | `template-only` | Copied into projects for methodology score output. |
 | `METRICS.md` | template | `template-only` | Copied into projects for product/technical measures. |

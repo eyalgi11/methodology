@@ -120,6 +120,8 @@ open_questions="$(count_open_questions "$(project_file_path "$target_dir" "OPEN_
 active_risks="$(count_active_risks "$(project_file_path "$target_dir" "RISK_REGISTER.md")")"
 active_blockers="$(safe_grep_count '^- Blocker:' "$(project_file_path "$target_dir" "BLOCKERS.md")")"
 active_claims="$(safe_grep_count '^## Claim ' "$(project_file_path "$target_dir" "ACTIVE_CLAIMS.md")")"
+methodology_failure_count="$(safe_grep_count '^## Methodology Failure - ' "$(project_file_path "$target_dir" "METHODOLOGY_FAILURES.md")")"
+open_methodology_failure_count="$(safe_grep_count '^- Status:[[:space:]]*(open|triaged)$' "$(project_file_path "$target_dir" "METHODOLOGY_FAILURES.md")")"
 manual_test_readiness="$(awk '
   /^- Manual-test readiness:/ { capture = 1; next }
   capture && /^  - / {
@@ -223,6 +225,8 @@ cat > "$(project_file_path "$target_dir" "methodology-state.json")" <<EOF
   "active_risks": $active_risks,
   "active_blockers": $active_blockers,
   "active_claims": $active_claims,
+  "methodology_failure_count": $methodology_failure_count,
+  "open_methodology_failure_count": $open_methodology_failure_count,
   "active_claim_ids": $active_claim_ids_json,
   "active_experiments": $active_experiments,
   "running_experiments": $running_experiments,

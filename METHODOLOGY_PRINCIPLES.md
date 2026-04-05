@@ -36,6 +36,7 @@ It should feel like a small operating system for software work, not a pile of te
 - make meaningful progress checkpoints visible
 - keep a clear done gate with real verification
 - make risky deviations explicit through exceptions instead of silently normalizing them
+- record methodology-caused failures explicitly and turn them into suggested improvements instead of normalizing the pain
 
 ## What The Methodology Must Never Do Without Explicit User Approval
 

@@ -63,6 +63,8 @@ milestone_name="$(awk '/## Current Milestone/{flag=1; next} /## /{if(flag) exit}
 milestone_name="${milestone_name:-Unset}"
 last_verification="$(last_verification_result "$(project_file_path "$target_dir" "VERIFICATION_LOG.md")")"
 active_claims="$(safe_grep_count '^## Claim ' "$(project_file_path "$target_dir" "ACTIVE_CLAIMS.md")")"
+methodology_failures="$(safe_grep_count '^## Methodology Failure - ' "$(project_file_path "$target_dir" "METHODOLOGY_FAILURES.md")")"
+open_methodology_failures="$(safe_grep_count '^- Status:[[:space:]]*(open|triaged)$' "$(project_file_path "$target_dir" "METHODOLOGY_FAILURES.md")")"
 active_experiments="$(safe_grep_count '^- Experiment:[[:space:]]*[^[:space:]].+' "$(project_file_path "$target_dir" "EXPERIMENTS.md")")"
 running_experiments="$(safe_grep_count '^[[:space:]]*Status:[[:space:]]*(proposed|running|observing)' "$(project_file_path "$target_dir" "EXPERIMENTS.md")")"
 active_release_risk="$(python3 -c 'import json,sys,pathlib; p=pathlib.Path(sys.argv[1]); data=json.loads(p.read_text()) if p.exists() else {}; print(data.get("active_release_risk",""))' "$state_file" 2>/dev/null || true)"
@@ -112,6 +114,8 @@ if (( json_mode == 1 )); then
   printf '"ready_limit":%s,' "$ready_limit"
   printf '"done":%s,' "$done_count"
   printf '"active_claims":%s,' "$active_claims"
+  printf '"methodology_failures":%s,' "$methodology_failures"
+  printf '"open_methodology_failures":%s,' "$open_methodology_failures"
   printf '"active_experiments":%s,' "$active_experiments"
   printf '"running_experiments":%s,' "$running_experiments"
   printf '"stale_claims":%s,' "$stale_claims"
@@ -138,6 +142,7 @@ Active task: ${active_task:-n/a} (${active_task_state:-n/a})
 Risk: class=${active_risk_class:-n/a} release=${active_release_risk:-n/a}
 Task workspace: $active_task_workspace
 Tasks: in-progress=$in_progress_count/$in_progress_limit ready=$ready_count/$ready_limit done=$done_count claims=$active_claims stale-claims=$stale_claims experiments=$active_experiments running-experiments=$running_experiments
+Methodology feedback: failures=$methodology_failures open=$open_methodology_failures
 Agent metrics: verification-entries=$verification_entries claim-coverage=$claim_ready_signal
 Current milestone: $milestone_name
 Next step: $next_step

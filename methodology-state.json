@@ -48,11 +48,13 @@
   "active_risks": 0,
   "active_blockers": 0,
   "active_claims": 0,
+  "methodology_failure_count": 0,
+  "open_methodology_failure_count": 0,
   "active_claim_ids": [],
   "active_experiments": 0,
   "running_experiments": 0,
   "stale_claim_count": 0,
   "last_verification_result": "unknown",
   "methodology_score": 0,
-  "updated_at": "2026-04-05 11:58:50"
+  "updated_at": "2026-04-05 12:08:48"
 }
