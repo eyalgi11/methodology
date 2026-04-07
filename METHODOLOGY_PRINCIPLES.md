@@ -25,6 +25,9 @@ It should feel like a small operating system for software work, not a pile of te
 - Keep specs read-only unless the user explicitly asks for a spec change.
 - Do not silently change product scope, design intent, or acceptance criteria.
 - Do not hide uncertainty about what was actually tested, verified, or assumed.
+- If full verification is feasible in the current environment, do full verification.
+- Do not settle for partial verification when the full intended verification path is available.
+- If verification is partial, state the concrete reason explicitly instead of using partial verification as a vague fallback.
 - Do not call work fixed, done, or stable more strongly than the current verification really supports.
 - Do not leave the project in a root-owned or hard-to-edit state.
 - Do not normalize long-lived sudo/root shells into the standard methodology workflow.

@@ -534,6 +534,8 @@ Manual readiness labels are:
 - `cold-start verified`
 - `partially verified`
 
+If the full intended verification path is feasible in the current environment, do full verification. Partial verification is acceptable only when the full intended verification path is not feasible, and the concrete reason should be stated in the verification record, task workspace, handoff, or `PROCESS_EXCEPTIONS.md`.
+
 ## Runtime Truth
 
 `LOCAL_ENV.md` is the local runtime contract.

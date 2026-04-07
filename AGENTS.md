@@ -95,6 +95,8 @@ This repository is methodology-managed.
 - When something is ready for manual human checking, do not leave that implicit. Say it clearly and provide short instructions for what to open, where to click, and what result to expect.
 - Manual-test readiness must be labeled as `warm-env verified`, `cold-start verified`, or `partially verified`.
 - Never present warm-environment validation as if it were a cold-start-ready user handoff.
+- If the full intended verification path is feasible in the current environment, do full verification.
+- Use partial verification only when the full intended verification path is not feasible, and state the concrete reason in the verification record, task workspace, handoff, or `PROCESS_EXCEPTIONS.md`.
 - Manual-test instructions must include prerequisites, quick dependency checks, an app health check, expected ports, and one note about likely local networking traps.
 - If local services were already running in the agent environment, convert that into an explicit prerequisite instead of silently assuming the user has the same state.
 - If running from a sudo/root shell, do not leave root-owned project files behind. Normalize ownership and edit permissions before finishing the work.

@@ -5,6 +5,8 @@ Work is done only when all applicable items below are true:
 - Behavior is implemented and matches the agreed scope.
 - Acceptance criteria are satisfied.
 - Verification was run and recorded.
+- If the full intended verification path was feasible in the current environment, full verification was run.
+- Partial verification is acceptable only when the full intended verification path was not feasible, and the concrete reason was recorded.
 - For meaningful non-trivial work, an evaluator / verifier pass reviewed the sprint against its contract or criteria, or the reason for not doing so was recorded.
 - Release risk, rollout path, and rollback path are documented for meaningful user-facing or risky work.
 - For experiment-driven work, the keep / discard / inconclusive decision is recorded in `EXPERIMENT_LOG.md` before the result is treated as durable.

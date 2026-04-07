@@ -37,12 +37,14 @@ For meaningful work, the methodology should:
 
 Before calling meaningful work done, the methodology should:
 - run the intended verification path
+- prefer full verification whenever the intended path is feasible in the current environment
 - record what was actually verified
 - use precise confidence language:
   - `implemented` when the change exists
   - `verified` when the target path passed
   - `stable` only when stronger repeated or cross-path verification exists
 - distinguish warm-env, cold-start, and partial verification honestly
+- use partial verification only when the full intended verification path is not feasible, and state the concrete reason
 - include browser automation for web UI work unless explicitly skipped
 - include full native Appium verification for mobile/device work unless explicitly skipped
 - keep manual QA instructions short, explicit, and reproducible when human checking is possible

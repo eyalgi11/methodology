@@ -376,6 +376,8 @@ Existing files are preserved. Missing files are created.
 - Post-launch review is now part of the normal flow through feature specs, release notes, and project health instead of being left implicit after shipping.
 - `EXPERIMENTS.md` and `EXPERIMENT_LOG.md` are the controlled experimentation layer: use them for bounded hypothesis-driven work instead of letting agents run unbounded loops.
 - Cold-start-ready handoff means verified from zero running processes; otherwise label it as warm-env verified or partially verified.
+- If the full intended verification path is feasible in the current environment, do full verification instead of stopping at partial verification.
+- Use partial verification only when the full intended verification path is not feasible, and state the concrete reason explicitly in the verification record or exception trail.
 - Feature-complete and integration-hardened are not the same; if integration hardening is still needed, create an explicit stabilization follow-up task.
 - `methodology-audit.sh` returns non-zero when files are missing or still untouched templates.
 - `methodology-status.sh` returns non-zero when key continuity files are missing or older than recent work files.
